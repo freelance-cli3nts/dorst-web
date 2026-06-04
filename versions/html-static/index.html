@@ -1,0 +1,1186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dorst — Drink Well, Drink Whale</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,300;1,9..144,700&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:          #FAFAF5;
+  --ink:         #0D0C09;
+  --mid:         #706E66;
+  --pale:        #E8E5DC;
+  --beer-ipa:    #D94F0A;
+  --beer-stout:  #1C0D00;
+  --beer-pale:   #C8940E;
+  --beer-neipa:  #2B5C1A;
+  --beer-summer: #E8B84B;
+  --beer-winter: #7A1E2E;
+  --radius:      4px;
+  --nav-h:       72px;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Outfit', sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  overflow-x: hidden;
+}
+
+/* ── NAV ──────────────────────────────────────────────────────── */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: var(--nav-h);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 48px;
+  z-index: 100;
+  transition: background 0.3s, box-shadow 0.3s;
+}
+nav.scrolled {
+  background: rgba(250,250,245,0.96);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 1px 0 rgba(0,0,0,0.08);
+}
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: var(--ink);
+}
+.nav-logo svg { width: 40px; height: 28px; }
+.nav-logo-text {
+  font-family: 'Fraunces', serif;
+  font-size: 22px;
+  font-weight: 900;
+  letter-spacing: -0.5px;
+}
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 36px;
+  list-style: none;
+}
+.nav-links a {
+  text-decoration: none;
+  color: var(--ink);
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  opacity: 0.75;
+  transition: opacity 0.2s;
+}
+.nav-links a:hover { opacity: 1; }
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.lang-toggle {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+}
+.lang-toggle span {
+  padding: 4px 8px;
+  cursor: pointer;
+  opacity: 0.4;
+  transition: opacity 0.2s;
+  border-radius: var(--radius);
+}
+.lang-toggle span.active { opacity: 1; background: var(--ink); color: var(--bg); }
+.btn-nav {
+  background: var(--ink);
+  color: var(--bg);
+  border: none;
+  padding: 10px 22px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  border-radius: var(--radius);
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: background 0.2s, transform 0.15s;
+}
+.btn-nav:hover { background: #333; transform: translateY(-1px); }
+
+/* ── HERO ─────────────────────────────────────────────────────── */
+.hero {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  padding: 0 48px;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 60% 80% at 80% 50%, rgba(210,200,180,0.18) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero-content {
+  padding-top: var(--nav-h);
+  z-index: 2;
+}
+.hero-eyebrow {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--mid);
+  margin-bottom: 24px;
+  opacity: 0;
+  animation: fadeUp 0.8s 0.2s forwards;
+}
+.hero-headline {
+  font-family: 'Fraunces', serif;
+  font-size: clamp(56px, 7vw, 96px);
+  font-weight: 900;
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+  margin-bottom: 28px;
+  opacity: 0;
+  animation: fadeUp 0.8s 0.4s forwards;
+}
+.hero-headline em {
+  font-style: italic;
+  font-weight: 300;
+  color: var(--mid);
+}
+.hero-sub {
+  font-size: 17px;
+  font-weight: 300;
+  color: var(--mid);
+  line-height: 1.6;
+  max-width: 400px;
+  margin-bottom: 44px;
+  opacity: 0;
+  animation: fadeUp 0.8s 0.6s forwards;
+}
+.hero-ctas {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  opacity: 0;
+  animation: fadeUp 0.8s 0.8s forwards;
+}
+.btn-primary {
+  background: var(--ink);
+  color: var(--bg);
+  border: none;
+  padding: 16px 32px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  border-radius: var(--radius);
+  cursor: pointer;
+  text-decoration: none;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.18); }
+.btn-ghost {
+  background: transparent;
+  color: var(--ink);
+  border: 1.5px solid rgba(0,0,0,0.25);
+  padding: 15px 32px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  border-radius: var(--radius);
+  cursor: pointer;
+  text-decoration: none;
+  transition: border-color 0.2s, transform 0.2s;
+}
+.btn-ghost:hover { border-color: var(--ink); transform: translateY(-2px); }
+
+.hero-visual {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: var(--nav-h);
+  position: relative;
+  z-index: 1;
+}
+.whale-wrap {
+  animation: whaleFloat 6s ease-in-out infinite;
+  filter: drop-shadow(0 24px 48px rgba(0,0,0,0.10));
+}
+@keyframes whaleFloat {
+  0%, 100% { transform: translateY(0px) rotate(-1deg); }
+  50%       { transform: translateY(-18px) rotate(1deg); }
+}
+
+.hero-scroll-hint {
+  position: absolute;
+  bottom: 36px;
+  left: 48px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--mid);
+  opacity: 0;
+  animation: fadeUp 1s 1.2s forwards;
+}
+.scroll-line {
+  width: 40px;
+  height: 1px;
+  background: var(--mid);
+  position: relative;
+  overflow: hidden;
+}
+.scroll-line::after {
+  content: '';
+  position: absolute;
+  left: -100%;
+  top: 0;
+  width: 100%;
+  height: 1px;
+  background: var(--ink);
+  animation: scrollPulse 2s 1.5s ease-in-out infinite;
+}
+@keyframes scrollPulse {
+  0% { left: -100%; }
+  100% { left: 100%; }
+}
+
+/* ── BEER LINEUP ──────────────────────────────────────────────── */
+.section-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--mid);
+  margin-bottom: 48px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.section-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--pale);
+}
+
+.beer-lineup {
+  padding: 100px 48px;
+}
+.beer-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+.beer-card {
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer;
+  position: relative;
+  transition: transform 0.3s, box-shadow 0.3s;
+  aspect-ratio: 3/4;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+.beer-card:hover { transform: translateY(-6px); box-shadow: 0 24px 48px rgba(0,0,0,0.15); }
+
+.beer-card-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+.beer-card-content {
+  position: relative;
+  z-index: 2;
+  padding: 28px 24px;
+  background: linear-gradient(transparent, rgba(0,0,0,0.55));
+}
+.beer-card-can {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -60%);
+  z-index: 1;
+  transition: transform 0.3s;
+}
+.beer-card:hover .beer-card-can {
+  transform: translate(-50%, -65%) scale(1.04);
+}
+.beer-style {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.7);
+  margin-bottom: 6px;
+}
+.beer-name {
+  font-family: 'Fraunces', serif;
+  font-size: 26px;
+  font-weight: 700;
+  color: white;
+  line-height: 1.1;
+  margin-bottom: 4px;
+}
+.beer-abv {
+  font-size: 13px;
+  color: rgba(255,255,255,0.6);
+  font-weight: 400;
+}
+.beer-cta {
+  margin-top: 16px;
+  display: inline-block;
+  background: white;
+  color: var(--ink);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  padding: 8px 16px;
+  border-radius: 3px;
+  text-decoration: none;
+  transition: background 0.2s;
+}
+.beer-cta:hover { background: rgba(255,255,255,0.85); }
+
+/* Can SVG placeholder */
+.can-svg { width: 90px; height: 160px; }
+
+/* ── STATS ────────────────────────────────────────────────────── */
+.stats-bar {
+  background: var(--ink);
+  padding: 80px 48px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  position: relative;
+  overflow: hidden;
+}
+.stats-bar::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 50% 100% at 50% 100%, rgba(255,255,255,0.03) 0%, transparent 70%);
+}
+.stat-item {
+  text-align: center;
+  padding: 20px 40px;
+  position: relative;
+}
+.stat-item:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  right: 0; top: 20%; bottom: 20%;
+  width: 1px;
+  background: rgba(255,255,255,0.1);
+}
+.stat-number {
+  font-family: 'Fraunces', serif;
+  font-size: clamp(52px, 6vw, 80px);
+  font-weight: 900;
+  color: white;
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+.stat-number sup {
+  font-size: 0.4em;
+  font-weight: 300;
+  vertical-align: super;
+  opacity: 0.6;
+}
+.stat-label {
+  font-size: 13px;
+  font-weight: 400;
+  color: rgba(255,255,255,0.45);
+  letter-spacing: 0.08em;
+  margin-top: 10px;
+  text-transform: uppercase;
+}
+
+/* ── STORY ────────────────────────────────────────────────────── */
+.story-section {
+  display: grid;
+  grid-template-columns: 5fr 4fr;
+  gap: 80px;
+  padding: 120px 48px;
+  align-items: center;
+}
+.story-text { }
+.story-headline {
+  font-family: 'Fraunces', serif;
+  font-size: clamp(36px, 4vw, 52px);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin-bottom: 28px;
+}
+.story-body {
+  font-size: 17px;
+  font-weight: 300;
+  line-height: 1.75;
+  color: var(--mid);
+  margin-bottom: 40px;
+}
+.story-origin {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding-top: 32px;
+  border-top: 1px solid var(--pale);
+}
+.origin-flag {
+  font-size: 28px;
+  line-height: 1;
+}
+.origin-text {
+  font-size: 13px;
+  color: var(--mid);
+  line-height: 1.5;
+}
+.origin-text strong { color: var(--ink); font-weight: 600; }
+.story-image {
+  border-radius: 8px;
+  overflow: hidden;
+  aspect-ratio: 4/5;
+  background: var(--pale);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.img-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  opacity: 0.3;
+}
+.img-placeholder svg { width: 48px; height: 48px; }
+.img-placeholder span { font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; }
+
+/* ── SEASONAL ─────────────────────────────────────────────────── */
+.seasonal {
+  margin: 0 48px;
+  border-radius: 12px;
+  background: var(--beer-summer);
+  padding: 80px 64px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 60px;
+  position: relative;
+  overflow: hidden;
+}
+.seasonal::before {
+  content: '';
+  position: absolute;
+  right: -60px; top: -60px;
+  width: 300px; height: 300px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.12);
+}
+.seasonal-badge {
+  display: inline-block;
+  background: rgba(0,0,0,0.15);
+  color: rgba(0,0,0,0.7);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  padding: 6px 14px;
+  border-radius: 100px;
+  margin-bottom: 20px;
+}
+.seasonal-headline {
+  font-family: 'Fraunces', serif;
+  font-size: clamp(36px, 4vw, 54px);
+  font-weight: 900;
+  color: var(--ink);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  margin-bottom: 16px;
+}
+.seasonal-desc {
+  font-size: 17px;
+  font-weight: 300;
+  color: rgba(0,0,0,0.6);
+  line-height: 1.6;
+  margin-bottom: 36px;
+  max-width: 440px;
+}
+.btn-seasonal {
+  display: inline-block;
+  background: var(--ink);
+  color: white;
+  padding: 14px 28px;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: var(--radius);
+  text-decoration: none;
+  transition: transform 0.2s;
+}
+.btn-seasonal:hover { transform: translateY(-2px); }
+.seasonal-can-wrap {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  justify-content: center;
+}
+
+/* ── LOCATIONS ────────────────────────────────────────────────── */
+.locations-teaser {
+  padding: 100px 48px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+}
+.locations-text .section-label { margin-bottom: 24px; }
+.locations-headline {
+  font-family: 'Fraunces', serif;
+  font-size: clamp(36px, 4vw, 52px);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin-bottom: 20px;
+}
+.locations-sub {
+  font-size: 16px;
+  color: var(--mid);
+  line-height: 1.65;
+  margin-bottom: 36px;
+}
+.btn-outline {
+  display: inline-block;
+  border: 1.5px solid var(--ink);
+  color: var(--ink);
+  padding: 13px 28px;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: var(--radius);
+  text-decoration: none;
+  transition: background 0.2s, color 0.2s, transform 0.2s;
+}
+.btn-outline:hover { background: var(--ink); color: var(--bg); transform: translateY(-2px); }
+
+.venues-preview {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+.venue-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 0;
+  border-bottom: 1px solid var(--pale);
+  text-decoration: none;
+  color: var(--ink);
+  transition: padding-left 0.2s;
+}
+.venue-row:hover { padding-left: 8px; }
+.venue-name { font-size: 16px; font-weight: 500; }
+.venue-type {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--mid);
+  background: var(--pale);
+  padding: 4px 10px;
+  border-radius: 100px;
+}
+.venue-arrow { opacity: 0.3; font-size: 16px; }
+
+/* ── B2B STRIP ────────────────────────────────────────────────── */
+.b2b-strip {
+  margin: 0 48px 100px;
+  background: var(--pale);
+  border-radius: 8px;
+  padding: 56px 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 40px;
+}
+.b2b-text {}
+.b2b-eyebrow {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--mid);
+  margin-bottom: 10px;
+}
+.b2b-headline {
+  font-family: 'Fraunces', serif;
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  margin-bottom: 12px;
+}
+.b2b-sub {
+  font-size: 15px;
+  color: var(--mid);
+  font-weight: 300;
+  max-width: 440px;
+  line-height: 1.6;
+}
+
+/* ── FOOTER ───────────────────────────────────────────────────── */
+footer {
+  background: var(--ink);
+  color: white;
+  padding: 80px 48px 40px;
+}
+.footer-top {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 60px;
+  margin-bottom: 60px;
+  padding-bottom: 60px;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+.footer-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+.footer-logo-text {
+  font-family: 'Fraunces', serif;
+  font-size: 20px;
+  font-weight: 900;
+  color: white;
+}
+.footer-tagline {
+  font-size: 14px;
+  color: rgba(255,255,255,0.4);
+  line-height: 1.6;
+  font-weight: 300;
+  max-width: 240px;
+}
+.footer-col h4 {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.35);
+  margin-bottom: 20px;
+}
+.footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+.footer-col a {
+  text-decoration: none;
+  color: rgba(255,255,255,0.6);
+  font-size: 14px;
+  font-weight: 400;
+  transition: color 0.2s;
+}
+.footer-col a:hover { color: white; }
+.footer-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 12px;
+  color: rgba(255,255,255,0.25);
+}
+.social-links { display: flex; gap: 20px; }
+.social-links a { color: rgba(255,255,255,0.35); text-decoration: none; font-size: 13px; font-weight: 500; transition: color 0.2s; }
+.social-links a:hover { color: white; }
+
+/* ── ANIMATIONS ───────────────────────────────────────────────── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+.reveal-delay-4 { transition-delay: 0.4s; }
+
+/* ── MOBILE ────────────────────────────────────────────────────── */
+@media (max-width: 900px) {
+  nav { padding: 0 24px; }
+  .nav-links { display: none; }
+  .hero { grid-template-columns: 1fr; padding: 0 24px; }
+  .hero-visual { display: none; }
+  .hero-content { padding-top: calc(var(--nav-h) + 40px); }
+  .beer-grid { grid-template-columns: 1fr 1fr; }
+  .beer-lineup { padding: 60px 24px; }
+  .stats-bar { grid-template-columns: 1fr; padding: 60px 24px; gap: 32px; }
+  .stat-item::after { display: none; }
+  .story-section { grid-template-columns: 1fr; padding: 60px 24px; gap: 40px; }
+  .seasonal { margin: 0 24px; padding: 48px 32px; }
+  .seasonal-can-wrap { display: none; }
+  .locations-teaser { grid-template-columns: 1fr; padding: 60px 24px; }
+  .b2b-strip { margin: 0 24px 60px; flex-direction: column; padding: 40px 32px; }
+  footer { padding: 60px 24px 32px; }
+  .footer-top { grid-template-columns: 1fr 1fr; }
+}
+</style>
+</head>
+
+<body>
+
+<!-- ── NAV ──────────────────────────────────────────────────── -->
+<nav id="main-nav">
+  <a href="./" class="nav-logo">
+    <svg viewBox="0 0 80 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- Whale body -->
+      <path d="M 8 30 Q 8 14 28 12 Q 52 10 62 24 Q 70 34 64 42 Q 56 52 36 50 Q 16 48 8 36 Z" fill="#0D0C09"/>
+      <!-- Tail upper fluke -->
+      <path d="M 62 28 Q 72 14 78 8 Q 74 22 72 30 Z" fill="#0D0C09"/>
+      <!-- Tail lower fluke -->
+      <path d="M 62 36 Q 74 36 78 48 Q 72 38 68 38 Z" fill="#0D0C09"/>
+      <!-- Dorsal fin -->
+      <path d="M 34 12 Q 40 2 48 10 Z" fill="#0D0C09"/>
+      <!-- Pectoral fin -->
+      <path d="M 24 38 Q 18 50 28 48 Z" fill="#0D0C09"/>
+      <!-- Eye -->
+      <circle cx="24" cy="26" r="3" fill="white"/>
+      <circle cx="23" cy="25" r="1" fill="#0D0C09"/>
+      <!-- Belly -->
+      <path d="M 14 35 Q 30 44 52 40" stroke="rgba(255,255,255,0.2)" stroke-width="2" fill="none" stroke-linecap="round"/>
+      <!-- Waterspout dots -->
+      <circle cx="10" cy="8" r="2" fill="#0D0C09" opacity="0.4"/>
+      <circle cx="14" cy="4" r="1.5" fill="#0D0C09" opacity="0.3"/>
+      <circle cx="6" cy="5" r="1" fill="#0D0C09" opacity="0.2"/>
+    </svg>
+    <span class="nav-logo-text">DORST</span>
+  </a>
+
+  <ul class="nav-links">
+    <li><a href="#beers">Beers</a></li>
+    <li><a href="#locations">Locations</a></li>
+    <li><a href="#about">About</a></li>
+  </ul>
+
+  <div class="nav-right">
+    <div class="lang-toggle">
+      <span class="active" onclick="setLang('EN')">EN</span>
+      <span onclick="setLang('BG')">BG</span>
+    </div>
+    <a href="#shop" class="btn-nav">Shop Cans ↗</a>
+  </div>
+</nav>
+
+<!-- ── HERO ──────────────────────────────────────────────────── -->
+<section class="hero">
+  <div class="hero-content">
+    <p class="hero-eyebrow">Craft brewery · Bankya, Bulgaria · Est. 2017</p>
+    <h1 class="hero-headline">
+      Beer worth<br><em>thirsting</em><br>for
+    </h1>
+    <p class="hero-sub">
+      Dorst /dɔrst/ — thirst in Dutch. We brew the kind of beer we'd genuinely want to drink: bold styles, honest ingredients, no compromise.
+    </p>
+    <div class="hero-ctas">
+      <a href="#shop" class="btn-primary">Shop Cans</a>
+      <a href="https://partners.dorst.bg" class="btn-ghost">I'm a Partner →</a>
+    </div>
+  </div>
+
+  <div class="hero-visual">
+    <div class="whale-wrap">
+      <!-- Large hero whale -->
+      <svg width="520" height="380" viewBox="0 0 520 380" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Main body -->
+        <path d="M 40 200 Q 40 110 130 90 Q 260 65 340 130 Q 410 185 390 255 Q 365 320 240 318 Q 100 315 40 230 Z" fill="#0D0C09"/>
+        <!-- Tail upper -->
+        <path d="M 370 148 Q 430 80 470 48 Q 452 130 448 178 Z" fill="#0D0C09"/>
+        <!-- Tail lower -->
+        <path d="M 368 248 Q 448 250 478 318 Q 452 260 430 252 Z" fill="#0D0C09"/>
+        <!-- Dorsal fin -->
+        <path d="M 200 92 Q 230 30 278 78 Z" fill="#0D0C09"/>
+        <!-- Pectoral fin -->
+        <path d="M 130 248 Q 100 318 162 305 Z" fill="#0D0C09"/>
+        <!-- Eye -->
+        <circle cx="128" cy="174" r="18" fill="white"/>
+        <circle cx="122" cy="170" r="7" fill="#0D0C09"/>
+        <circle cx="118" cy="167" r="2.5" fill="white"/>
+        <!-- Belly highlight -->
+        <path d="M 70 230 Q 180 286 340 265" stroke="rgba(255,255,255,0.08)" stroke-width="8" fill="none" stroke-linecap="round"/>
+        <!-- Smile -->
+        <path d="M 68 204 Q 90 224 116 210" stroke="rgba(255,255,255,0.25)" stroke-width="3" fill="none" stroke-linecap="round"/>
+        <!-- Spout drops -->
+        <circle cx="52" cy="50" r="10" fill="#0D0C09" opacity="0.15"/>
+        <circle cx="72" cy="24" r="7" fill="#0D0C09" opacity="0.12"/>
+        <circle cx="32" cy="30" r="5" fill="#0D0C09" opacity="0.08"/>
+        <circle cx="88" cy="10" r="4" fill="#0D0C09" opacity="0.08"/>
+        <!-- Texture scales suggestion -->
+        <path d="M 180 130 Q 190 125 200 130" stroke="rgba(255,255,255,0.06)" stroke-width="2" fill="none"/>
+        <path d="M 210 118 Q 220 113 230 118" stroke="rgba(255,255,255,0.06)" stroke-width="2" fill="none"/>
+        <path d="M 240 112 Q 250 107 260 112" stroke="rgba(255,255,255,0.06)" stroke-width="2" fill="none"/>
+        <path d="M 160 148 Q 172 143 184 148" stroke="rgba(255,255,255,0.05)" stroke-width="2" fill="none"/>
+        <path d="M 148 168 Q 160 163 170 168" stroke="rgba(255,255,255,0.05)" stroke-width="2" fill="none"/>
+      </svg>
+    </div>
+  </div>
+
+  <div class="hero-scroll-hint">
+    <div class="scroll-line"></div>
+    Scroll to explore
+  </div>
+</section>
+
+<!-- ── BEER LINEUP ────────────────────────────────────────────── -->
+<section class="beer-lineup" id="beers">
+  <div class="section-label reveal">Our Beers</div>
+  <div class="beer-grid">
+
+    <!-- Beer 1: Lion Heart IPA -->
+    <div class="beer-card reveal reveal-delay-1">
+      <div class="beer-card-bg" style="background: linear-gradient(145deg, #D94F0A 0%, #8B2500 100%);"></div>
+      <div class="beer-card-can">
+        <svg class="can-svg" viewBox="0 0 90 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="8" y="20" width="74" height="120" rx="12" fill="rgba(0,0,0,0.25)"/>
+          <rect x="10" y="22" width="70" height="116" rx="11" fill="#E8580F"/>
+          <ellipse cx="45" cy="22" rx="35" ry="8" fill="#B8410A"/>
+          <ellipse cx="45" cy="138" rx="35" ry="8" fill="#B8410A"/>
+          <rect x="10" y="50" width="70" height="60" fill="rgba(255,255,255,0.08)"/>
+          <text x="45" y="82" text-anchor="middle" fill="white" font-family="serif" font-weight="900" font-size="11" opacity="0.9">LION</text>
+          <text x="45" y="96" text-anchor="middle" fill="white" font-family="serif" font-weight="900" font-size="11" opacity="0.9">HEART</text>
+          <rect x="18" y="140" width="54" height="5" rx="2.5" fill="rgba(0,0,0,0.2)"/>
+          <rect x="28" y="14" width="34" height="10" rx="5" fill="#B8410A"/>
+          <rect x="30" y="13" width="30" height="5" rx="2.5" fill="#D9561A"/>
+        </svg>
+      </div>
+      <div class="beer-card-content">
+        <div class="beer-style">West Coast IPA</div>
+        <div class="beer-name">Lion Heart</div>
+        <div class="beer-abv">6.8% ABV · Citrus & Mango</div>
+        <a href="#shop" class="beer-cta">Add to Cart</a>
+      </div>
+    </div>
+
+    <!-- Beer 2: Full Breakfast Stout -->
+    <div class="beer-card reveal reveal-delay-2">
+      <div class="beer-card-bg" style="background: linear-gradient(145deg, #2A1400 0%, #0A0500 100%);"></div>
+      <div class="beer-card-can">
+        <svg class="can-svg" viewBox="0 0 90 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="8" y="20" width="74" height="120" rx="12" fill="rgba(0,0,0,0.25)"/>
+          <rect x="10" y="22" width="70" height="116" rx="11" fill="#1C0D00"/>
+          <ellipse cx="45" cy="22" rx="35" ry="8" fill="#100700"/>
+          <ellipse cx="45" cy="138" rx="35" ry="8" fill="#100700"/>
+          <rect x="10" y="50" width="70" height="60" fill="rgba(255,255,255,0.04)"/>
+          <text x="45" y="76" text-anchor="middle" fill="rgba(255,255,255,0.8)" font-family="serif" font-weight="900" font-size="9">FULL</text>
+          <text x="45" y="88" text-anchor="middle" fill="rgba(255,255,255,0.8)" font-family="serif" font-weight="900" font-size="9">BREAKFAST</text>
+          <text x="45" y="100" text-anchor="middle" fill="rgba(255,255,255,0.8)" font-family="serif" font-weight="900" font-size="9">STOUT</text>
+          <rect x="18" y="140" width="54" height="5" rx="2.5" fill="rgba(0,0,0,0.2)"/>
+          <rect x="28" y="14" width="34" height="10" rx="5" fill="#100700"/>
+          <rect x="30" y="13" width="30" height="5" rx="2.5" fill="#2A1400"/>
+          <!-- Gold ring detail -->
+          <rect x="10" y="48" width="70" height="2" fill="rgba(200,148,14,0.4)"/>
+          <rect x="10" y="110" width="70" height="2" fill="rgba(200,148,14,0.4)"/>
+        </svg>
+      </div>
+      <div class="beer-card-content">
+        <div class="beer-style">Pastry Stout</div>
+        <div class="beer-name">Full Breakfast</div>
+        <div class="beer-abv">8.2% ABV · Chocolate & Coffee</div>
+        <a href="#shop" class="beer-cta">Add to Cart</a>
+      </div>
+    </div>
+
+    <!-- Beer 3: Alexis Pale Ale -->
+    <div class="beer-card reveal reveal-delay-3">
+      <div class="beer-card-bg" style="background: linear-gradient(145deg, #C8940E 0%, #7A5600 100%);"></div>
+      <div class="beer-card-can">
+        <svg class="can-svg" viewBox="0 0 90 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="8" y="20" width="74" height="120" rx="12" fill="rgba(0,0,0,0.2)"/>
+          <rect x="10" y="22" width="70" height="116" rx="11" fill="#D4A017"/>
+          <ellipse cx="45" cy="22" rx="35" ry="8" fill="#A87C0A"/>
+          <ellipse cx="45" cy="138" rx="35" ry="8" fill="#A87C0A"/>
+          <rect x="10" y="50" width="70" height="60" fill="rgba(255,255,255,0.1)"/>
+          <text x="45" y="85" text-anchor="middle" fill="rgba(0,0,0,0.7)" font-family="serif" font-style="italic" font-weight="700" font-size="16">Alexis</text>
+          <rect x="18" y="140" width="54" height="5" rx="2.5" fill="rgba(0,0,0,0.15)"/>
+          <rect x="28" y="14" width="34" height="10" rx="5" fill="#A87C0A"/>
+          <rect x="30" y="13" width="30" height="5" rx="2.5" fill="#C8940E"/>
+        </svg>
+      </div>
+      <div class="beer-card-content">
+        <div class="beer-style">Pale Ale</div>
+        <div class="beer-name">Alexis</div>
+        <div class="beer-abv">5.4% ABV · Citrus & Lemongrass</div>
+        <a href="#shop" class="beer-cta">Add to Cart</a>
+      </div>
+    </div>
+
+    <!-- Beer 4: Hippy Shake NEIPA -->
+    <div class="beer-card reveal reveal-delay-4">
+      <div class="beer-card-bg" style="background: linear-gradient(145deg, #2B5C1A 0%, #0F2008 100%);"></div>
+      <div class="beer-card-can">
+        <svg class="can-svg" viewBox="0 0 90 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="8" y="20" width="74" height="120" rx="12" fill="rgba(0,0,0,0.2)"/>
+          <rect x="10" y="22" width="70" height="116" rx="11" fill="#2B5C1A"/>
+          <ellipse cx="45" cy="22" rx="35" ry="8" fill="#1E4010"/>
+          <ellipse cx="45" cy="138" rx="35" ry="8" fill="#1E4010"/>
+          <rect x="10" y="50" width="70" height="60" fill="rgba(255,255,255,0.06)"/>
+          <text x="45" y="78" text-anchor="middle" fill="rgba(255,255,255,0.85)" font-family="sans-serif" font-weight="700" font-size="10">HIPPY</text>
+          <text x="45" y="92" text-anchor="middle" fill="rgba(255,255,255,0.85)" font-family="sans-serif" font-weight="700" font-size="10">SHAKE</text>
+          <text x="45" y="104" text-anchor="middle" fill="rgba(255,255,255,0.5)" font-family="sans-serif" font-size="7">NEIPA</text>
+          <rect x="18" y="140" width="54" height="5" rx="2.5" fill="rgba(0,0,0,0.15)"/>
+          <rect x="28" y="14" width="34" height="10" rx="5" fill="#1E4010"/>
+          <rect x="30" y="13" width="30" height="5" rx="2.5" fill="#2B5C1A"/>
+        </svg>
+      </div>
+      <div class="beer-card-content">
+        <div class="beer-style">New England IPA</div>
+        <div class="beer-name">Hippy Shake</div>
+        <div class="beer-abv">6.2% ABV · Mango & Papaya</div>
+        <a href="#shop" class="beer-cta">Add to Cart</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── STATS BAR ───────────────────────────────────────────────── -->
+<section class="stats-bar reveal">
+  <div class="stat-item">
+    <div class="stat-number">4,000<sup>L</sup></div>
+    <div class="stat-label">Monthly production capacity</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-number">20<sup>+</sup></div>
+    <div class="stat-label">Beer styles brewed</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-number">2017</div>
+    <div class="stat-label">Est. in Bankya, Bulgaria</div>
+  </div>
+</section>
+
+<!-- ── STORY ──────────────────────────────────────────────────── -->
+<section class="story-section" id="about">
+  <div class="story-text reveal">
+    <div class="section-label">Our Story</div>
+    <h2 class="story-headline">Born from two<br>countries,<br>one thirst</h2>
+    <p class="story-body">
+      Dorst — meaning "thirst" in Dutch — was founded in 2017 as a collaboration between Dean and Erwin: a Bulgarian and a Dutchman who shared an obsession with craft beer done right. We brew in Bankya with one simple mission: to make the beers we'd genuinely want to drink ourselves.
+    </p>
+    <p class="story-body">
+      No shortcuts. No filler adjuncts. Just honest ingredients, bold recipes, and a whale to watch over it all.
+    </p>
+    <div class="story-origin">
+      <div class="origin-flag">🇧🇬 🇳🇱</div>
+      <div class="origin-text">
+        <strong>Dean & Erwin</strong><br>
+        Co-founders · Bankya Brewery
+      </div>
+    </div>
+  </div>
+  <div class="story-image reveal reveal-delay-2">
+    <div class="img-placeholder">
+      <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="4" y="8" width="40" height="32" rx="4" stroke="currentColor" stroke-width="2"/>
+        <circle cx="17" cy="21" r="5" stroke="currentColor" stroke-width="2"/>
+        <path d="M 4 36 L 16 26 L 24 33 L 32 24 L 44 36" stroke="currentColor" stroke-width="2" fill="none"/>
+      </svg>
+      <span>Brewery photo</span>
+    </div>
+  </div>
+</section>
+
+<!-- ── SEASONAL SPOTLIGHT ──────────────────────────────────────── -->
+<div class="seasonal reveal">
+  <div class="seasonal-content">
+    <span class="seasonal-badge">☀ Summer 2025</span>
+    <h2 class="seasonal-headline">Alma paints<br>in Vienna</h2>
+    <p class="seasonal-desc">
+      Our summer seasonal: smooth, aromatic, and built for long evenings. Soft stone-fruit and a dry finish that keeps you coming back. Limited batch — while stocks last.
+    </p>
+    <a href="#shop" class="btn-seasonal">Buy Now</a>
+  </div>
+  <div class="seasonal-can-wrap">
+    <svg width="120" height="220" viewBox="0 0 90 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="8" y="20" width="74" height="120" rx="12" fill="rgba(0,0,0,0.12)"/>
+      <rect x="10" y="22" width="70" height="116" rx="11" fill="rgba(255,255,255,0.3)"/>
+      <ellipse cx="45" cy="22" rx="35" ry="8" fill="rgba(255,255,255,0.2)"/>
+      <ellipse cx="45" cy="138" rx="35" ry="8" fill="rgba(255,255,255,0.2)"/>
+      <rect x="10" y="50" width="70" height="60" fill="rgba(255,255,255,0.15)"/>
+      <text x="45" y="82" text-anchor="middle" fill="rgba(0,0,0,0.6)" font-family="serif" font-style="italic" font-weight="700" font-size="14">Alma</text>
+      <rect x="28" y="14" width="34" height="10" rx="5" fill="rgba(255,255,255,0.2)"/>
+    </svg>
+  </div>
+</div>
+
+<!-- ── LOCATIONS ──────────────────────────────────────────────── -->
+<section class="locations-teaser" id="locations">
+  <div class="locations-text reveal">
+    <div class="section-label">Find Dorst</div>
+    <h2 class="locations-headline">Available at<br>7 venues<br>across Sofia</h2>
+    <p class="locations-sub">
+      Find us on tap and on the shelf at some of Sofia's best bars and bottle shops. Each venue is handpicked — they care about what they pour.
+    </p>
+    <a href="#locations" class="btn-outline">See all locations →</a>
+  </div>
+
+  <div class="venues-preview reveal reveal-delay-2">
+    <a href="https://maps.google.com" target="_blank" class="venue-row">
+      <span class="venue-name">Hom's</span>
+      <span class="venue-type">Bar</span>
+      <span class="venue-arrow">→</span>
+    </a>
+    <a href="https://maps.google.com" target="_blank" class="venue-row">
+      <span class="venue-name">Los Muchachos</span>
+      <span class="venue-type">Bar</span>
+      <span class="venue-arrow">→</span>
+    </a>
+    <a href="https://maps.google.com" target="_blank" class="venue-row">
+      <span class="venue-name">Bar After 5</span>
+      <span class="venue-type">Bar</span>
+      <span class="venue-arrow">→</span>
+    </a>
+    <a href="https://maps.google.com" target="_blank" class="venue-row">
+      <span class="venue-name">Sbeerka</span>
+      <span class="venue-type">Bottle Shop</span>
+      <span class="venue-arrow">→</span>
+    </a>
+    <a href="https://maps.google.com" target="_blank" class="venue-row">
+      <span class="venue-name">Nosferatu</span>
+      <span class="venue-type">Bar</span>
+      <span class="venue-arrow">→</span>
+    </a>
+    <a href="https://maps.google.com" target="_blank" class="venue-row">
+      <span class="venue-name">Dissident</span>
+      <span class="venue-type">Bar</span>
+      <span class="venue-arrow">→</span>
+    </a>
+    <a href="https://maps.google.com" target="_blank" class="venue-row">
+      <span class="venue-name">Cush Bar</span>
+      <span class="venue-type">Bar</span>
+      <span class="venue-arrow">→</span>
+    </a>
+  </div>
+</section>
+
+<!-- ── B2B STRIP ──────────────────────────────────────────────── -->
+<div class="b2b-strip reveal">
+  <div class="b2b-text">
+    <div class="b2b-eyebrow">For venues & bottle shops</div>
+    <h3 class="b2b-headline">Stock Dorst<br>in your venue</h3>
+    <p class="b2b-sub">Access our full range of kegs and cans. Self-serve ordering, real-time inventory, and invoicing built in — no back-and-forth required.</p>
+  </div>
+  <a href="https://partners.dorst.bg" class="btn-primary" style="white-space:nowrap; flex-shrink:0;">Partner Portal →</a>
+</div>
+
+<!-- ── FOOTER ─────────────────────────────────────────────────── -->
+<footer>
+  <div class="footer-top">
+    <div>
+      <div class="footer-logo">
+        <svg width="32" height="22" viewBox="0 0 80 56" fill="none">
+          <path d="M 8 30 Q 8 14 28 12 Q 52 10 62 24 Q 70 34 64 42 Q 56 52 36 50 Q 16 48 8 36 Z" fill="white"/>
+          <path d="M 62 28 Q 72 14 78 8 Q 74 22 72 30 Z" fill="white"/>
+          <path d="M 62 36 Q 74 36 78 48 Q 72 38 68 38 Z" fill="white"/>
+          <path d="M 34 12 Q 40 2 48 10 Z" fill="white"/>
+          <circle cx="24" cy="26" r="3" fill="#0D0C09"/>
+        </svg>
+        <span class="footer-logo-text">DORST</span>
+      </div>
+      <p class="footer-tagline">Drink well, drink whale.<br>Brewed with thirst in Bankya, Bulgaria.</p>
+    </div>
+
+    <div class="footer-col">
+      <h4>Beers</h4>
+      <ul>
+        <li><a href="#">Lion Heart IPA</a></li>
+        <li><a href="#">Full Breakfast Stout</a></li>
+        <li><a href="#">Alexis Pale Ale</a></li>
+        <li><a href="#">Hippy Shake NEIPA</a></li>
+        <li><a href="#">Seasonal</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <h4>Company</h4>
+      <ul>
+        <li><a href="#about">About</a></li>
+        <li><a href="#locations">Locations</a></li>
+        <li><a href="https://partners.dorst.bg">Partner Portal</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <h4>Legal</h4>
+      <ul>
+        <li><a href="#">Privacy Policy</a></li>
+        <li><a href="#">Terms of Sale</a></li>
+        <li><a href="#">Cookie Policy</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <span>© 2026 Dorst Brewery. All rights reserved.</span>
+    <div class="social-links">
+      <a href="#">Instagram</a>
+      <a href="#">Facebook</a>
+      <a href="#">Untappd</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+// Nav scroll effect
+const nav = document.getElementById('main-nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 40);
+});
+
+// Scroll reveal
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      observer.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.12 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// Language toggle
+function setLang(lang) {
+  document.querySelectorAll('.lang-toggle span').forEach(s => {
+    s.classList.toggle('active', s.textContent === lang);
+  });
+}
+</script>
+
+</body>
+</html>
