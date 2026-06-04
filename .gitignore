@@ -1,0 +1,27 @@
+# Dependencies & builds
+node_modules/
+.pnpm-store/
+.next/
+out/
+
+# GitHub Pages CI output (not committed)
+deploy/
+
+# Archive (source lives in versions/)
+brand-website-generation.zip
+
+# Environment
+.env*.local
+
+# OS & tooling
+.DS_Store
+.vercel/
+.qodo/
+
+# v0 sandbox internal files
+__v0_runtime_loader.js
+__v0_devtools.tsx
+__v0_jsx-dev-runtime.ts
+.snowflake/
+.v0-trash/
+next.user-config.*

@@ -53,6 +53,7 @@ Replace `dorst-web` with your GitHub repo name.
 2. **Enable Pages** in the repo on GitHub:
    - **Settings → Pages**
    - **Build and deployment → Source:** **GitHub Actions** (not “Deploy from branch”)
+   - Do **not** add GitHub’s “Next.js” workflow template (`nextjs.yml`) — this repo uses **`deploy-pages.yml`** only.
 
 3. **Trigger a deploy** — push to `main` (or run the workflow manually under **Actions → Deploy to GitHub Pages → Run workflow**).
 
