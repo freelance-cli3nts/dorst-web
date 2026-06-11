@@ -1,14 +1,28 @@
 'use client'
 
+import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { WhaleSVG } from '@/components/whale/WhaleSVG'
+
+const COOKIE = 'dorst-age-verified'
+
+function getReturnPath() {
+  if (typeof window === 'undefined') return '/'
+  return new URLSearchParams(window.location.search).get('return') ?? '/'
+}
 
 export function AgeGate() {
   const router = useRouter()
 
+  useEffect(() => {
+    // Already verified — redirect away (middleware lets /age-gate through)
+    const match = document.cookie.match(new RegExp(`(?:^|; )${COOKIE}=([^;]*)`))
+    if (match?.[1] === '1') router.replace(getReturnPath())
+  }, [router])
+
   function handleYes() {
-    document.cookie = 'dorst-age-verified=1; max-age=31536000; path=/'
-    router.refresh()
+    document.cookie = `${COOKIE}=1; max-age=31536000; path=/; samesite=lax`
+    router.push(getReturnPath())
   }
 
   function handleNo() {
