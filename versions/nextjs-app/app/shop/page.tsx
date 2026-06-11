@@ -1,86 +1,40 @@
-import { beers } from "@/lib/data"
-import { Metadata } from "next"
-import { ShopProductGrid } from "@/components/shop-product-grid"
-import { Truck, Shield, Package } from "lucide-react"
+import type { Metadata } from 'next'
+import { beers } from '@/lib/data'
+import { ShopClient } from './ShopClient'
 
 export const metadata: Metadata = {
-  title: "Shop | Dorst Brewery",
-  description: "Order fresh Dorst craft beer online. Delivered straight to your door across Bulgaria.",
+  title: 'Shop — Dorst Brewery',
+  description: 'Order Dorst craft beer online. Cans delivered to Sofia. Minimum 12 cans per order.',
 }
 
-const features = [
-  {
-    icon: Truck,
-    title: "Fast Delivery",
-    description: "Free shipping on orders over 50 BGN",
-  },
-  {
-    icon: Shield,
-    title: "Secure Payment",
-    description: "Safe & encrypted checkout",
-  },
-  {
-    icon: Package,
-    title: "Fresh Guarantee",
-    description: "Always fresh, or your money back",
-  },
-]
-
 export default function ShopPage() {
+  const shopBeers = beers.filter(b => b.active && (b.format === 'can' || b.format === 'both') && b.priceB2C)
+
   return (
-    <div className="pt-20">
-      {/* Hero Section */}
-      <section className="py-16 lg:py-24 bg-muted">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="flex flex-col items-center text-center">
-            <span className="text-sm font-medium tracking-widest uppercase text-accent mb-4">
-              Online Store
-            </span>
-            <h1 className="font-serif text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight">
-              Shop Dorst
-            </h1>
-            <p className="mt-6 text-lg text-muted-foreground max-w-2xl text-pretty">
-              Get your favorite craft beers delivered fresh to your door. Mix and match to create your perfect pack.
-            </p>
-          </div>
-
-          {/* Features */}
-          <div className="mt-12 grid gap-6 sm:grid-cols-3">
-            {features.map((feature) => (
-              <div key={feature.title} className="flex items-center gap-4 rounded-xl bg-card p-4 border border-border">
-                <div className="flex-shrink-0 w-10 h-10 rounded-full bg-accent/10 flex items-center justify-center">
-                  <feature.icon className="w-5 h-5 text-accent" />
-                </div>
-                <div>
-                  <h3 className="font-medium text-sm">{feature.title}</h3>
-                  <p className="text-xs text-muted-foreground">{feature.description}</p>
-                </div>
-              </div>
-            ))}
-          </div>
+    <div style={{ paddingTop: 72 }}>
+      {/* Header */}
+      <section style={{ padding: '60px 48px 40px', borderBottom: '1px solid var(--line)' }}>
+        <p style={{ fontSize: 11, fontWeight: 600, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--ink-soft)', marginBottom: 16 }}>
+          Online Store
+        </p>
+        <h1 style={{ fontSize: 'clamp(40px, 6vw, 72px)', fontWeight: 900, lineHeight: 0.95, letterSpacing: '-0.03em', marginBottom: 16 }}>
+          Shop Cans
+        </h1>
+        <p style={{ fontSize: 16, fontWeight: 300, color: 'var(--ink-soft)', lineHeight: 1.6, maxWidth: 480, marginBottom: 24 }}>
+          Sofia delivery only. Fresh from the brewery. Minimum 12 cans per order.
+        </p>
+        <div style={{ display: 'flex', gap: 24, fontSize: 12, fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--ink-soft)' }}>
+          <span>UNFILTERED · UNPASTEURISED · VEGAN (most styles)</span>
         </div>
       </section>
 
-      {/* Product Grid */}
-      <section className="py-16 lg:py-24">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <ShopProductGrid beers={beers} />
-        </div>
-      </section>
+      <ShopClient beers={shopBeers} />
 
-      {/* Trust Section */}
-      <section className="py-16 lg:py-24 bg-primary text-primary-foreground">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="flex flex-col items-center text-center">
-            <h2 className="font-serif text-3xl md:text-4xl font-bold tracking-tight">
-              Questions About Your Order?
-            </h2>
-            <p className="mt-4 text-primary-foreground/70 max-w-xl">
-              Our team is here to help. Reach out via email at shop@dorstbrewery.com or call us at +359 123 456 789.
-            </p>
-          </div>
-        </div>
-      </section>
+      <style>{`
+        @media (max-width: 768px) {
+          section { padding-left: 24px !important; padding-right: 24px !important; }
+        }
+      `}</style>
     </div>
   )
 }
