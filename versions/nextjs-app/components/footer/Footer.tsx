@@ -1,9 +1,21 @@
 'use client'
 
 import Link from 'next/link'
+import { useTranslations } from 'next-intl'
 import { WhaleSVG } from '@/components/whale/WhaleSVG'
 
+const BEER_SLUGS = [
+  { slug: 'lion-heart', name: 'Lion Heart' },
+  { slug: 'hippy-shake', name: 'Hippy Shake' },
+  { slug: 'alexis', name: 'Alexis' },
+  { slug: 'alma', name: 'Alma' },
+  { slug: 'pulpa-fiction', name: 'Pulpa Fiction' },
+  { slug: 'full-breakfast-stout', name: 'Full Breakfast Stout' },
+]
+
 export function Footer() {
+  const t = useTranslations('Footer')
+
   return (
     <footer style={{ background: 'var(--ink)', color: 'white', padding: '80px 48px 40px' }}>
       <div
@@ -24,21 +36,21 @@ export function Footer() {
             <span style={{ fontSize: 20, fontWeight: 900, color: 'white' }}>DORST</span>
           </div>
           <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.4)', lineHeight: 1.6, fontWeight: 300, maxWidth: 240 }}>
-            Drink well, drink whale.<br />
-            Brewed with thirst in Bankya, Bulgaria.
+            {t('tagline')}<br />
+            {t('sub')}
           </p>
         </div>
 
         {/* Beers */}
         <div>
           <h4 style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.35)', marginBottom: 20 }}>
-            Beers
+            {t('sectionBeers')}
           </h4>
           <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 12 }}>
-            {['Lion Heart', 'Hippy Shake', 'Alexis', 'Alma', 'Pulpa Fiction', 'Full Breakfast Stout'].map(name => (
-              <li key={name}>
+            {BEER_SLUGS.map(({ slug, name }) => (
+              <li key={slug}>
                 <Link
-                  href={`/beers/${name.toLowerCase().replace(/ /g, '-')}`}
+                  href={`/beers/${slug}`}
                   style={{ color: 'rgba(255,255,255,0.6)', textDecoration: 'none', fontSize: 14, transition: 'color 0.2s' }}
                   onMouseEnter={e => (e.currentTarget.style.color = 'white')}
                   onMouseLeave={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.6)')}
@@ -53,13 +65,13 @@ export function Footer() {
         {/* Company */}
         <div>
           <h4 style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.35)', marginBottom: 20 }}>
-            Company
+            {t('sectionCompany')}
           </h4>
           <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 12 }}>
             {[
-              { href: '/about', label: 'About' },
-              { href: '/locations', label: 'Locations' },
-              { href: 'https://partners.dorst.bg', label: 'Partner Portal' },
+              { href: '/about', label: t('about') },
+              { href: '/locations', label: t('locations') },
+              { href: '/partners', label: t('partners') },
             ].map(({ href, label }) => (
               <li key={href}>
                 <Link
@@ -78,10 +90,10 @@ export function Footer() {
         {/* Legal */}
         <div>
           <h4 style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.35)', marginBottom: 20 }}>
-            Legal
+            {t('sectionLegal')}
           </h4>
           <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 12 }}>
-            {['Privacy Policy', 'Terms of Sale', 'Cookie Policy'].map(label => (
+            {[t('privacy'), t('terms'), t('cookies')].map(label => (
               <li key={label}>
                 <Link
                   href="#"
@@ -99,7 +111,7 @@ export function Footer() {
 
       {/* Bottom bar */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontSize: 12, color: 'rgba(255,255,255,0.25)' }}>
-        <span>© 2026 Dorst Brewery. All rights reserved.</span>
+        <span>{t('copyright')}</span>
         <div style={{ display: 'flex', gap: 20 }}>
           {['Instagram', 'Facebook', 'Untappd'].map(name => (
             <a

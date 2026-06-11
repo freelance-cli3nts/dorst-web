@@ -495,7 +495,10 @@ export function B2BPortalClient() {
 
             <div style={{ borderTop: '1px solid var(--line)', marginTop: 24, paddingTop: 28 }}>
               <p style={{ fontSize: 14, color: '#706E66', marginBottom: 16 }}>Questions? Email <a href="mailto:orders@dorst.bg" style={{ color: 'var(--ink)', fontWeight: 600 }}>orders@dorst.bg</a></p>
-              <button onClick={resetPortal} style={{ ...btnPrimary, width: 'auto', background: '#E8E5DC', color: 'var(--ink)' }}>Place another order</button>
+              <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
+                <button onClick={resetPortal} style={{ ...btnPrimary, width: 'auto', background: '#E8E5DC', color: 'var(--ink)' }}>Place another order</button>
+                <Link href="/partners/tracking" style={{ display: 'inline-flex', alignItems: 'center', padding: '14px 28px', fontSize: 15, fontWeight: 600, color: 'var(--ink)', textDecoration: 'none', border: '1.5px solid var(--line)', borderRadius: 5 }}>Track this order →</Link>
+              </div>
             </div>
           </div>
         )}
