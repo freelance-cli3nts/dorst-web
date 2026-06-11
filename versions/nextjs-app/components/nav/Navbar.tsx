@@ -2,17 +2,29 @@
 
 import Link from 'next/link'
 import { useState, useEffect } from 'react'
+import { useTranslations } from 'next-intl'
 import { WhaleSVG } from '@/components/whale/WhaleSVG'
+import { useCart } from '@/contexts/CartContext'
+import { useLocale } from '@/components/LocaleProvider'
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
+  const t = useTranslations('Nav')
+  const { totalItems } = useCart()
+  const { locale, setLocale } = useLocale()
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40)
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
+
+  const navLinks = [
+    { href: '/beers', label: t('beers') },
+    { href: '/locations', label: t('locations') },
+    { href: '/about', label: t('about') },
+  ]
 
   return (
     <nav
@@ -65,11 +77,7 @@ export function Navbar() {
         }}
         className="hidden md:flex"
       >
-        {[
-          { href: '/beers', label: 'Beers' },
-          { href: '/locations', label: 'Locations' },
-          { href: '/about', label: 'About' },
-        ].map(({ href, label }) => (
+        {navLinks.map(({ href, label }) => (
           <li key={href}>
             <Link
               href={href}
@@ -93,35 +101,39 @@ export function Navbar() {
 
       {/* Right: lang toggle + CTA */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 20 }} className="hidden md:flex">
+        {/* Language toggle */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 2, fontSize: 12, fontWeight: 600, letterSpacing: '0.1em' }}>
-          <span
-            style={{
-              padding: '4px 8px',
-              cursor: 'pointer',
-              borderRadius: 4,
-              background: 'var(--ink)',
-              color: 'var(--foam)',
-            }}
-          >
-            EN
-          </span>
-          <span
-            style={{
-              padding: '4px 8px',
-              cursor: 'pointer',
-              opacity: 0.4,
-              transition: 'opacity 0.2s',
-            }}
-            onMouseEnter={e => (e.currentTarget.style.opacity = '1')}
-            onMouseLeave={e => (e.currentTarget.style.opacity = '0.4')}
-          >
-            BG
-          </span>
+          {(['bg', 'en'] as const).map(l => (
+            <button
+              key={l}
+              onClick={() => setLocale(l)}
+              style={{
+                padding: '4px 8px',
+                cursor: 'pointer',
+                borderRadius: 4,
+                border: 'none',
+                background: locale === l ? 'var(--ink)' : 'transparent',
+                color: locale === l ? 'var(--foam)' : 'var(--ink)',
+                opacity: locale === l ? 1 : 0.4,
+                transition: 'opacity 0.2s, background 0.2s',
+                fontFamily: 'var(--font-sans)',
+                fontWeight: 600,
+                fontSize: 12,
+                letterSpacing: '0.1em',
+              }}
+              onMouseEnter={e => { if (locale !== l) e.currentTarget.style.opacity = '1' }}
+              onMouseLeave={e => { if (locale !== l) e.currentTarget.style.opacity = '0.4' }}
+            >
+              {l.toUpperCase()}
+            </button>
+          ))}
         </div>
 
+        {/* Shop CTA with cart badge */}
         <Link
           href="/shop"
           style={{
+            position: 'relative',
             display: 'inline-flex',
             alignItems: 'center',
             gap: 6,
@@ -145,7 +157,29 @@ export function Navbar() {
             e.currentTarget.style.color = 'var(--foam)'
           }}
         >
-          Shop Cans ↗
+          {t('shop')}
+          {totalItems > 0 && (
+            <span
+              style={{
+                position: 'absolute',
+                top: -6,
+                right: -6,
+                background: 'var(--sun)',
+                color: 'var(--ink)',
+                fontSize: 10,
+                fontWeight: 800,
+                borderRadius: '50%',
+                width: 18,
+                height: 18,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                lineHeight: 1,
+              }}
+            >
+              {totalItems > 99 ? '99+' : totalItems}
+            </span>
+          )}
         </Link>
       </div>
 
@@ -196,12 +230,7 @@ export function Navbar() {
           }}
           className="md:hidden"
         >
-          {[
-            { href: '/beers', label: 'Beers' },
-            { href: '/locations', label: 'Locations' },
-            { href: '/about', label: 'About' },
-            { href: '/shop', label: 'Shop Cans ↗' },
-          ].map(({ href, label }) => (
+          {[...navLinks, { href: '/shop', label: `${t('shop')}${totalItems > 0 ? ` (${totalItems})` : ''}` }].map(({ href, label }) => (
             <Link
               key={href}
               href={href}
@@ -216,6 +245,30 @@ export function Navbar() {
               {label}
             </Link>
           ))}
+
+          {/* Mobile lang toggle */}
+          <div style={{ display: 'flex', gap: 8, paddingTop: 8, borderTop: '1px solid var(--line)' }}>
+            {(['bg', 'en'] as const).map(l => (
+              <button
+                key={l}
+                onClick={() => { setLocale(l); setMenuOpen(false) }}
+                style={{
+                  padding: '6px 14px',
+                  borderRadius: 4,
+                  border: '1.5px solid var(--line)',
+                  background: locale === l ? 'var(--ink)' : 'transparent',
+                  color: locale === l ? 'var(--foam)' : 'var(--ink)',
+                  fontFamily: 'var(--font-sans)',
+                  fontWeight: 700,
+                  fontSize: 12,
+                  letterSpacing: '0.1em',
+                  cursor: 'pointer',
+                }}
+              >
+                {l.toUpperCase()}
+              </button>
+            ))}
+          </div>
         </div>
       )}
     </nav>

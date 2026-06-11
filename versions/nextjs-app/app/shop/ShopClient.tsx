@@ -1,28 +1,9 @@
 'use client'
 
-import { useReducer } from 'react'
+import { useTranslations } from 'next-intl'
 import Link from 'next/link'
+import { useCart } from '@/contexts/CartContext'
 import type { Beer } from '@/lib/data'
-
-type CartState = Record<string, number>
-
-type CartAction =
-  | { type: 'INCREMENT'; id: string }
-  | { type: 'DECREMENT'; id: string }
-  | { type: 'CLEAR' }
-
-function cartReducer(state: CartState, action: CartAction): CartState {
-  switch (action.type) {
-    case 'INCREMENT':
-      return { ...state, [action.id]: (state[action.id] ?? 0) + 1 }
-    case 'DECREMENT':
-      return { ...state, [action.id]: Math.max(0, (state[action.id] ?? 0) - 1) }
-    case 'CLEAR':
-      return {}
-    default:
-      return state
-  }
-}
 
 const MINIMUM_CANS = 12
 const VAT_RATE = 0.20
@@ -32,25 +13,24 @@ interface Props {
 }
 
 export function ShopClient({ beers }: Props) {
-  const [cart, dispatch] = useReducer(cartReducer, {})
+  const t = useTranslations('Shop')
+  const { cart, addToCart, removeFromCart, clearCart, totalItems } = useCart()
 
-  const totalCans = Object.values(cart).reduce((a, b) => a + b, 0)
   const subtotal = beers.reduce((sum, b) => sum + (cart[b.id] ?? 0) * (b.priceB2C ?? 0), 0)
   const vat = subtotal * VAT_RATE
   const total = subtotal + vat
 
   async function handleCheckout() {
-    if (totalCans < MINIMUM_CANS) {
-      alert(`Minimum order is ${MINIMUM_CANS} cans. You have ${totalCans}.`)
+    if (totalItems < MINIMUM_CANS) {
+      alert(t('empty', { min: MINIMUM_CANS }))
       return
     }
     const items = beers
       .filter(b => (cart[b.id] ?? 0) > 0)
       .map(b => ({ id: b.id, qty: cart[b.id] ?? 0 }))
 
-    // Stub: in production, POST to /api/stripe/checkout
     alert(`Order submitted (stub):\n${JSON.stringify(items, null, 2)}\nTotal: €${total.toFixed(2)}`)
-    dispatch({ type: 'CLEAR' })
+    clearCart()
   }
 
   return (
@@ -101,13 +81,13 @@ export function ShopClient({ beers }: Props) {
             {/* Price */}
             <div style={{ textAlign: 'right', minWidth: 64 }}>
               <div style={{ fontSize: 16, fontWeight: 700 }}>€{beer.priceB2C?.toFixed(2)}</div>
-              <div style={{ fontSize: 11, color: 'var(--ink-soft)' }}>per can</div>
+              <div style={{ fontSize: 11, color: 'var(--ink-soft)' }}>{t('perCan')}</div>
             </div>
 
             {/* Qty control */}
             <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
               <button
-                onClick={() => dispatch({ type: 'DECREMENT', id: beer.id })}
+                onClick={() => removeFromCart(beer.id)}
                 style={{
                   width: 32, height: 32,
                   borderRadius: '50%',
@@ -129,7 +109,7 @@ export function ShopClient({ beers }: Props) {
                 {cart[beer.id] ?? 0}
               </span>
               <button
-                onClick={() => dispatch({ type: 'INCREMENT', id: beer.id })}
+                onClick={() => addToCart(beer.id)}
                 style={{
                   width: 32, height: 32,
                   borderRadius: '50%',
@@ -163,12 +143,12 @@ export function ShopClient({ beers }: Props) {
           }}
         >
           <h2 style={{ fontSize: 13, fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--ink-soft)', marginBottom: 20 }}>
-            Your Order
+            {t('orderSummary')}
           </h2>
 
-          {totalCans === 0 ? (
+          {totalItems === 0 ? (
             <p style={{ fontSize: 14, color: 'var(--ink-soft)', marginBottom: 20 }}>
-              Add at least {MINIMUM_CANS} cans to continue.
+              {t('empty', { min: MINIMUM_CANS })}
             </p>
           ) : (
             <>
@@ -180,22 +160,22 @@ export function ShopClient({ beers }: Props) {
               ))}
               <div style={{ borderTop: '1px solid var(--line)', marginTop: 12, paddingTop: 12 }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 13, color: 'var(--ink-soft)', marginBottom: 6 }}>
-                  <span>Subtotal (excl. VAT)</span>
+                  <span>{t('subtotal')}</span>
                   <span>€{subtotal.toFixed(2)}</span>
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 13, color: 'var(--ink-soft)', marginBottom: 12 }}>
-                  <span>VAT (20%)</span>
+                  <span>{t('vat')}</span>
                   <span>€{vat.toFixed(2)}</span>
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 18, fontWeight: 700 }}>
-                  <span>Total</span>
+                  <span>{t('total')}</span>
                   <span>€{total.toFixed(2)}</span>
                 </div>
               </div>
             </>
           )}
 
-          {totalCans < MINIMUM_CANS && totalCans > 0 && (
+          {totalItems < MINIMUM_CANS && totalItems > 0 && (
             <div
               style={{
                 background: '#FFF9E6',
@@ -207,35 +187,35 @@ export function ShopClient({ beers }: Props) {
                 marginTop: 12,
               }}
             >
-              {MINIMUM_CANS - totalCans} more cans needed for minimum order.
+              {t('moreCans', { n: MINIMUM_CANS - totalItems })}
             </div>
           )}
 
           <button
             onClick={handleCheckout}
-            disabled={totalCans < MINIMUM_CANS}
+            disabled={totalItems < MINIMUM_CANS}
             style={{
               display: 'block',
               width: '100%',
               marginTop: 20,
-              background: totalCans >= MINIMUM_CANS ? 'var(--ink)' : 'rgba(14,14,16,0.15)',
-              color: totalCans >= MINIMUM_CANS ? 'var(--foam)' : 'var(--ink-soft)',
-              border: `2px solid ${totalCans >= MINIMUM_CANS ? 'var(--ink)' : 'transparent'}`,
+              background: totalItems >= MINIMUM_CANS ? 'var(--ink)' : 'rgba(14,14,16,0.15)',
+              color: totalItems >= MINIMUM_CANS ? 'var(--foam)' : 'var(--ink-soft)',
+              border: `2px solid ${totalItems >= MINIMUM_CANS ? 'var(--ink)' : 'transparent'}`,
               padding: '14px 24px',
               fontSize: 15,
               fontWeight: 700,
               borderRadius: 'var(--radius-pill)',
-              cursor: totalCans >= MINIMUM_CANS ? 'pointer' : 'not-allowed',
+              cursor: totalItems >= MINIMUM_CANS ? 'pointer' : 'not-allowed',
               transition: 'background 0.2s, color 0.2s',
               fontFamily: 'var(--font-sans)',
               letterSpacing: '0.02em',
             }}
           >
-            {totalCans >= MINIMUM_CANS ? 'Proceed to Checkout →' : `Add ${MINIMUM_CANS} cans minimum`}
+            {totalItems >= MINIMUM_CANS ? t('checkout') : t('addMinimum', { min: MINIMUM_CANS })}
           </button>
 
           <p style={{ marginTop: 16, fontSize: 12, color: 'var(--ink-soft)', textAlign: 'center', lineHeight: 1.5 }}>
-            Sofia delivery only. Guest checkout — no account required.
+            {t('deliveryNote')}
           </p>
         </div>
       </div>

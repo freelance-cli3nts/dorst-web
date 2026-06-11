@@ -1,0 +1,124 @@
+{
+  "Nav": {
+    "beers": "Beers",
+    "locations": "Locations",
+    "about": "About",
+    "shop": "Shop Cans ↗"
+  },
+  "Footer": {
+    "tagline": "Drink well, drink whale.",
+    "sub": "Brewed with thirst in Bankya, Bulgaria.",
+    "sectionBeers": "Beers",
+    "sectionCompany": "Company",
+    "sectionLegal": "Legal",
+    "about": "About",
+    "locations": "Locations",
+    "partners": "Partner Portal",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Sale",
+    "cookies": "Cookie Policy",
+    "copyright": "© 2026 Dorst Brewery. All rights reserved."
+  },
+  "Home": {
+    "eyebrow": "Craft brewery · Bankya, Bulgaria · Est. 2017",
+    "headline": "Beer worth\n{thirsting} for",
+    "thirsting": "thirsting",
+    "body": "Dorst /dɔrst/ — thirst in Dutch. We brew the kind of beer we'd genuinely want to drink: bold styles, honest ingredients, no compromise.",
+    "cta": "Shop Cans ↗",
+    "ctaSecondary": "See all beers",
+    "featuredHeading": "Featured Beers",
+    "seasonalLabel": "Seasonal",
+    "statsHeading": "By the numbers",
+    "venuesHeading": "Find us in Sofia",
+    "venuesCta": "All locations →",
+    "partnersHeading": "For bars & restaurants",
+    "partnersCta": "Partner Portal →"
+  },
+  "Beers": {
+    "heading": "Our Beers",
+    "sub": "Ten styles. Zero compromise.",
+    "shopAll": "Shop Cans ↗",
+    "abv": "ABV",
+    "ibu": "IBU",
+    "plato": "Plato",
+    "ml": "Volume",
+    "seasonal": "Seasonal",
+    "seeMore": "See more →",
+    "hops": "Hops",
+    "serveTemp": "Serve temp",
+    "glass": "Glass",
+    "pairing": "Pairs with",
+    "story": "The story",
+    "formats": "Formats",
+    "available": "Available",
+    "unavailable": "Temporarily out",
+    "tags": {
+      "unfiltered": "Unfiltered",
+      "unpasteurised": "Unpasteurised",
+      "vegan": "Vegan"
+    }
+  },
+  "Shop": {
+    "heading": "Order Direct",
+    "sub": "Sofia delivery · guest checkout · minimum 12 cans",
+    "orderSummary": "Your Order",
+    "empty": "Add at least {min} cans to continue.",
+    "moreCans": "{n} more cans needed for minimum order.",
+    "checkout": "Proceed to Checkout →",
+    "addMinimum": "Add {min} cans minimum",
+    "subtotal": "Subtotal (excl. VAT)",
+    "vat": "VAT (20%)",
+    "total": "Total",
+    "perCan": "per can",
+    "deliveryNote": "Sofia delivery only. Guest checkout — no account required."
+  },
+  "Locations": {
+    "heading": "Find Dorst",
+    "sub": "Our beers at selected bars, restaurants and shops in Sofia.",
+    "types": {
+      "bar": "Bar",
+      "restaurant": "Restaurant",
+      "bottle_shop": "Bottle Shop"
+    },
+    "directions": "Directions →"
+  },
+  "About": {
+    "heading": "Our Story",
+    "sub": "Founded by Dean and Erwin in Bankya, 2017."
+  },
+  "AgeGate": {
+    "heading": "Before you enter",
+    "sub": "Please confirm you are 18 or over.",
+    "yes": "Yes, I'm 18+",
+    "no": "No, I'm under 18"
+  },
+  "B2B": {
+    "heading": "Partner Portal",
+    "accessHeading": "Access Code",
+    "accessLabel": "Enter your partner access code",
+    "accessPlaceholder": "DORST-XXXXXX",
+    "accessError": "Invalid code. Contact us: hello@dorst.bg",
+    "accessSubmit": "Continue",
+    "vatHeading": "VAT Number",
+    "vatLabel": "Company EIK / VAT number",
+    "vatPlaceholder": "BG123456789",
+    "vatLookup": "Look up company",
+    "vatError": "Invalid VAT number. Please check and try again.",
+    "orderHeading": "Your Order",
+    "paymentHeading": "Payment Method",
+    "confirmHeading": "Order received",
+    "trackingLink": "Track an order",
+    "tracking": {
+      "heading": "Track Your Order",
+      "sub": "Enter your order number to check its status.",
+      "label": "Order number",
+      "placeholder": "DORST-2026-XXXX",
+      "submit": "Check",
+      "notFound": "Order not found. Check the number and try again.",
+      "statusPending": "Received",
+      "statusPreparing": "Preparing",
+      "statusShipped": "Shipped",
+      "statusDelivered": "Delivered"
+    }
+  }
+}

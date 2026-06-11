@@ -4,6 +4,8 @@ import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
 import { Navbar } from '@/components/nav/Navbar'
 import { Footer } from '@/components/footer/Footer'
+import { CartProvider } from '@/contexts/CartContext'
+import { LocaleProvider } from '@/components/LocaleProvider'
 
 const montserrat = Montserrat({
   subsets: ['latin', 'cyrillic'],
@@ -34,11 +36,15 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${montserrat.variable} ${anonymousPro.variable}`}>
+    <html lang="bg" className={`${montserrat.variable} ${anonymousPro.variable}`}>
       <body>
-        <Navbar />
-        <main>{children}</main>
-        <Footer />
+        <LocaleProvider>
+          <CartProvider>
+            <Navbar />
+            <main>{children}</main>
+            <Footer />
+          </CartProvider>
+        </LocaleProvider>
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
     </html>
