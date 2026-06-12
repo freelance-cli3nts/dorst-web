@@ -2,10 +2,9 @@ import type { Metadata } from 'next'
 import { Montserrat, Anonymous_Pro } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
-import { Navbar } from '@/components/nav/Navbar'
-import { Footer } from '@/components/footer/Footer'
 import { CartProvider } from '@/contexts/CartContext'
 import { LocaleProvider } from '@/components/LocaleProvider'
+import { SiteShell } from './SiteShell'
 
 const montserrat = Montserrat({
   subsets: ['latin', 'cyrillic'],
@@ -40,9 +39,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <LocaleProvider>
           <CartProvider>
-            <Navbar />
-            <main>{children}</main>
-            <Footer />
+            <SiteShell>{children}</SiteShell>
           </CartProvider>
         </LocaleProvider>
         {process.env.NODE_ENV === 'production' && <Analytics />}

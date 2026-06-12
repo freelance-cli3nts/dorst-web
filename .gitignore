@@ -3,6 +3,7 @@ node_modules/
 .pnpm-store/
 .next/
 out/
+tsconfig.tsbuildinfo
 
 # GitHub Pages CI output (not committed)
 deploy/
