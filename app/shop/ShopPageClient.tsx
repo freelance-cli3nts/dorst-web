@@ -13,7 +13,7 @@ export function ShopPageClient({ beers }: Props) {
 
   return (
     <div style={{ paddingTop: 72 }}>
-      <section style={{ padding: '60px 48px 40px', borderBottom: '1px solid var(--line)' }}>
+      <section className="page-pad" style={{ padding: '60px 48px 40px', borderBottom: '1px solid var(--line)' }}>
         <p style={{ fontSize: 11, fontWeight: 600, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--ink-soft)', marginBottom: 16 }}>{t('eyebrow')}</p>
         <h1 style={{ fontSize: 'clamp(40px, 6vw, 72px)', fontWeight: 900, lineHeight: 0.95, letterSpacing: '-0.03em', marginBottom: 16 }}>{t('heading')}</h1>
         <p style={{ fontSize: 16, fontWeight: 300, color: 'var(--ink-soft)', lineHeight: 1.6, maxWidth: 480, marginBottom: 24 }}>{t('sub')}</p>
@@ -24,11 +24,6 @@ export function ShopPageClient({ beers }: Props) {
 
       <ShopClient beers={beers} />
 
-      <style>{`
-        @media (max-width: 768px) {
-          section { padding-left: 24px !important; padding-right: 24px !important; }
-        }
-      `}</style>
     </div>
   )
 }

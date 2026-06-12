@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { useTranslations } from 'next-intl'
 import { DorstLogo } from '@/components/brand/DorstLogo'
+import { SocialLinks } from '@/components/social/SocialLinks'
 
 const BEER_SLUGS = [
   { slug: 'lion-heart', name: 'Lion Heart' },
@@ -17,43 +18,27 @@ export function Footer() {
   const t = useTranslations('Footer')
 
   return (
-    <footer style={{ background: 'var(--ink)', color: 'white', padding: '80px 48px 40px' }}>
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: '2fr 1fr 1fr 1fr',
-          gap: 60,
-          marginBottom: 60,
-          paddingBottom: 60,
-          borderBottom: '1px solid rgba(255,255,255,0.1)',
-        }}
-        className="grid-cols-1 sm:grid-cols-2 lg:grid-cols-4"
-      >
+    <footer className="site-footer">
+      <div className="site-footer-grid">
         {/* Brand */}
         <div>
           <div style={{ marginBottom: 20 }}>
-            <DorstLogo height={32} variant="inverted" />
+            <DorstLogo height={50} variant="inverted" />
           </div>
-          <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.4)', lineHeight: 1.6, fontWeight: 300, maxWidth: 240 }}>
+          <p className="site-footer-tagline">
             {t('tagline')}<br />
             {t('sub')}
           </p>
+          <SocialLinks style={{ marginTop: 24 }} />
         </div>
 
         {/* Beers */}
         <div>
-          <h4 style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.35)', marginBottom: 20 }}>
-            {t('sectionBeers')}
-          </h4>
-          <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 12 }}>
+          <h4 className="site-footer-heading">{t('sectionBeers')}</h4>
+          <ul className="site-footer-links">
             {BEER_SLUGS.map(({ slug, name }) => (
               <li key={slug}>
-                <Link
-                  href={`/beers/${slug}`}
-                  style={{ color: 'rgba(255,255,255,0.6)', textDecoration: 'none', fontSize: 14, transition: 'color 0.2s' }}
-                  onMouseEnter={e => (e.currentTarget.style.color = 'white')}
-                  onMouseLeave={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.6)')}
-                >
+                <Link href={`/beers/${slug}`} className="site-footer-link">
                   {name}
                 </Link>
               </li>
@@ -63,22 +48,15 @@ export function Footer() {
 
         {/* Company */}
         <div>
-          <h4 style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.35)', marginBottom: 20 }}>
-            {t('sectionCompany')}
-          </h4>
-          <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 12 }}>
+          <h4 className="site-footer-heading">{t('sectionCompany')}</h4>
+          <ul className="site-footer-links">
             {[
               { href: '/about', label: t('about') },
               { href: '/locations', label: t('locations') },
               { href: '/partners', label: t('partners') },
             ].map(({ href, label }) => (
               <li key={href}>
-                <Link
-                  href={href}
-                  style={{ color: 'rgba(255,255,255,0.6)', textDecoration: 'none', fontSize: 14, transition: 'color 0.2s' }}
-                  onMouseEnter={e => (e.currentTarget.style.color = 'white')}
-                  onMouseLeave={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.6)')}
-                >
+                <Link href={href} className="site-footer-link">
                   {label}
                 </Link>
               </li>
@@ -88,18 +66,11 @@ export function Footer() {
 
         {/* Legal */}
         <div>
-          <h4 style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.35)', marginBottom: 20 }}>
-            {t('sectionLegal')}
-          </h4>
-          <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 12 }}>
+          <h4 className="site-footer-heading">{t('sectionLegal')}</h4>
+          <ul className="site-footer-links">
             {[t('privacy'), t('terms'), t('cookies')].map(label => (
               <li key={label}>
-                <Link
-                  href="#"
-                  style={{ color: 'rgba(255,255,255,0.6)', textDecoration: 'none', fontSize: 14, transition: 'color 0.2s' }}
-                  onMouseEnter={e => (e.currentTarget.style.color = 'white')}
-                  onMouseLeave={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.6)')}
-                >
+                <Link href="#" className="site-footer-link">
                   {label}
                 </Link>
               </li>
@@ -108,22 +79,8 @@ export function Footer() {
         </div>
       </div>
 
-      {/* Bottom bar */}
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontSize: 12, color: 'rgba(255,255,255,0.25)' }}>
+      <div className="site-footer-bottom">
         <span>{t('copyright')}</span>
-        <div style={{ display: 'flex', gap: 20 }}>
-          {['Instagram', 'Facebook', 'Untappd'].map(name => (
-            <a
-              key={name}
-              href="#"
-              style={{ color: 'rgba(255,255,255,0.35)', textDecoration: 'none', fontSize: 13, fontWeight: 500, transition: 'color 0.2s' }}
-              onMouseEnter={e => (e.currentTarget.style.color = 'white')}
-              onMouseLeave={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.35)')}
-            >
-              {name}
-            </a>
-          ))}
-        </div>
       </div>
     </footer>
   )

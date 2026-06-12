@@ -8,7 +8,7 @@ export function AboutPageClient() {
 
   return (
     <div style={{ paddingTop: 72 }}>
-      <section style={{ padding: '80px 48px', display: 'grid', gridTemplateColumns: '5fr 4fr', gap: 80, alignItems: 'center' }} className="about-grid">
+      <section className="about-grid page-pad" style={{ padding: '80px 48px', display: 'grid', gridTemplateColumns: '5fr 4fr', gap: 80, alignItems: 'center' }}>
         <div>
           <p style={{ fontSize: 11, fontWeight: 600, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--ink-soft)', marginBottom: 24 }}>{t('heading')}</p>
           <h1 style={{ fontSize: 'clamp(40px, 5vw, 64px)', fontWeight: 900, lineHeight: 0.95, letterSpacing: '-0.03em', marginBottom: 32 }}>{t('title')}</h1>
@@ -18,7 +18,7 @@ export function AboutPageClient() {
 
           <div style={{ paddingTop: 32, borderTop: '1px solid var(--line)' }}>
             <p style={{ fontSize: 11, fontWeight: 600, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--ink-soft)', marginBottom: 20 }}>{t('foundersHeading')}</p>
-            <div style={{ display: 'flex', gap: 40 }}>
+            <div className="founders-row" style={{ display: 'flex', gap: 40 }}>
               {[
                 { name: 'Dean', role: t('deanRole'), flag: '🇧🇬' },
                 { name: 'Erwin', role: t('erwinRole'), flag: '🇳🇱' },
@@ -47,7 +47,7 @@ export function AboutPageClient() {
         </div>
       </section>
 
-      <section style={{ padding: '80px 48px', background: 'var(--aubergine-deep)', color: 'white', display: 'grid', gridTemplateColumns: '4fr 5fr', gap: 80, alignItems: 'center' }} className="brewery-grid">
+      <section className="brewery-grid page-pad" style={{ padding: '80px 48px', background: 'var(--aubergine-deep)', color: 'white', display: 'grid', gridTemplateColumns: '4fr 5fr', gap: 80, alignItems: 'center' }}>
         <div style={{ borderRadius: 8, aspectRatio: '4/3', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12, opacity: 0.2 }}>
             <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
@@ -64,7 +64,7 @@ export function AboutPageClient() {
           <h2 style={{ fontSize: 'clamp(32px, 4vw, 48px)', fontWeight: 900, lineHeight: 1.05, letterSpacing: '-0.02em', marginBottom: 24, color: 'white' }}>{t('breweryTitle')}</h2>
           <p style={{ fontSize: 16, fontWeight: 300, color: 'rgba(255,255,255,0.65)', lineHeight: 1.75, marginBottom: 20 }}>{t('breweryP1')}</p>
           <p style={{ fontSize: 16, fontWeight: 300, color: 'rgba(255,255,255,0.65)', lineHeight: 1.75, marginBottom: 32 }}>{t('breweryP2')}</p>
-          <div style={{ display: 'flex', gap: 32 }}>
+          <div className="brewery-stats" style={{ display: 'flex', gap: 32 }}>
             {[
               { num: '4,000', unit: 'L/month', label: t('statCapacity') },
               { num: '20+', unit: '', label: t('statEverBrewed') },
@@ -81,7 +81,7 @@ export function AboutPageClient() {
         </div>
       </section>
 
-      <section style={{ padding: '80px 48px' }}>
+      <section className="page-pad" style={{ padding: '80px 48px' }}>
         <div style={{ maxWidth: 680 }}>
           <p style={{ fontSize: 11, fontWeight: 600, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--ink-soft)', marginBottom: 24 }}>{t('mascotHeading')}</p>
           <h2 style={{ fontSize: 'clamp(28px, 4vw, 44px)', fontWeight: 700, lineHeight: 1.1, letterSpacing: '-0.02em', marginBottom: 24 }}>{t('mascotTitle')}</h2>
@@ -101,12 +101,6 @@ export function AboutPageClient() {
         </Link>
       </div>
 
-      <style>{`
-        @media (max-width: 900px) {
-          .about-grid, .brewery-grid { grid-template-columns: 1fr !important; padding: 60px 24px !important; gap: 40px !important; }
-          .b2b-strip { flex-direction: column !important; margin: 0 24px 60px !important; padding: 32px !important; }
-        }
-      `}</style>
     </div>
   )
 }

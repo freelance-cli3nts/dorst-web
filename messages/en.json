@@ -3,7 +3,8 @@
     "beers": "Beers",
     "locations": "Locations",
     "about": "About",
-    "shop": "Shop Cans ↗"
+    "shop": "Shop Cans ↗",
+    "shopShort": "Shop ↗"
   },
   "Footer": {
     "tagline": "Drink well, drink whale.",

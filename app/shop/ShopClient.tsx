@@ -46,11 +46,8 @@ export function ShopClient({ beers }: Props) {
           return (
           <div
             key={beer.id}
+            className="shop-product-row"
             style={{
-              display: 'grid',
-              gridTemplateColumns: '80px 1fr auto auto',
-              gap: 16,
-              alignItems: 'center',
               padding: '20px 0',
               borderBottom: '1px solid var(--line)',
             }}
@@ -210,14 +207,6 @@ export function ShopClient({ beers }: Props) {
         </div>
       </div>
 
-      <style>{`
-        .shop-layout {
-          @media (max-width: 900px) {
-            grid-template-columns: 1fr !important;
-            padding: 24px !important;
-          }
-        }
-      `}</style>
     </div>
   )
 }

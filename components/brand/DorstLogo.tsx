@@ -5,13 +5,15 @@ interface DorstLogoProps {
   height?: number
   variant?: 'default' | 'inverted'
   style?: React.CSSProperties
+  className?: string
 }
 
-export function DorstLogo({ height = 36, variant = 'default', style }: DorstLogoProps) {
+export function DorstLogo({ height = 36, variant = 'default', style, className }: DorstLogoProps) {
   return (
     <Image
       src={assetPath('/brand/dorst-logo.png')}
       alt="Dorst"
+      className={className ?? 'dorst-logo'}
       width={Math.round(height * 2.8)}
       height={height}
       style={{

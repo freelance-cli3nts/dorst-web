@@ -3,7 +3,8 @@
     "beers": "Бири",
     "locations": "Локации",
     "about": "За нас",
-    "shop": "Купи кенчета ↗"
+    "shop": "Купи кенчета ↗",
+    "shopShort": "Купи ↗"
   },
   "Footer": {
     "tagline": "Пий добро, пий Whale.",

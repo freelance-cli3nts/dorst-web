@@ -8,6 +8,7 @@ export function middleware(request: NextRequest) {
   // Skip age gate for: age-gate pages, static assets, API routes, Next.js internals
   if (
     pathname.startsWith('/age-gate') ||
+    pathname.startsWith('/brand-book') ||
     pathname.startsWith('/api') ||
     pathname.startsWith('/_next') ||
     pathname.startsWith('/favicon') ||

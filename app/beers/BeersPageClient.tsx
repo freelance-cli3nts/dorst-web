@@ -14,7 +14,7 @@ export function BeersPageClient() {
 
   return (
     <div style={{ paddingTop: 72 }}>
-      <section style={{ padding: '60px 48px 0' }}>
+      <section className="page-pad" style={{ padding: '60px 48px 0' }}>
         <p style={{ fontSize: 11, fontWeight: 600, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--ink-soft)', marginBottom: 16 }}>
           {t('eyebrow')}
         </p>
@@ -26,7 +26,7 @@ export function BeersPageClient() {
         </p>
       </section>
 
-      <section style={{ padding: '0 48px 80px' }}>
+      <section className="page-pad" style={{ padding: '0 48px 80px' }}>
         <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--ink-soft)', marginBottom: 32, display: 'flex', alignItems: 'center', gap: 16 }}>
           {t('cannedSection')}
           <span style={{ flex: 1, height: 1, background: 'var(--line)' }} />
@@ -39,16 +39,13 @@ export function BeersPageClient() {
         </div>
       </section>
 
-      <div style={{ padding: '24px 48px 80px', borderTop: '1px solid var(--line)', fontSize: 12, fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--ink-soft)' }}>
+      <div className="page-pad" style={{ padding: '24px 48px 80px', borderTop: '1px solid var(--line)', fontSize: 12, fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--ink-soft)' }}>
         {t('legalStrip')}
       </div>
 
       <style>{`
         .beer-card { transition: transform 0.2s, box-shadow 0.2s; }
         .beer-card:hover { transform: translateY(-4px) !important; box-shadow: 0 16px 40px rgba(0,0,0,0.14) !important; }
-        @media (max-width: 768px) {
-          section, div[style*="padding: '0 48px"] { padding-left: 24px !important; padding-right: 24px !important; }
-        }
       `}</style>
     </div>
   )

@@ -50,12 +50,11 @@ export default function HomePage() {
         />
 
         {/* Left: text */}
-        <div style={{ paddingTop: 72, zIndex: 2 }}>
+        <div className="hero-content" style={{ paddingTop: 72, zIndex: 2 }}>
           <p
+            className="hero-eyebrow"
             style={{
-              fontSize: 11,
               fontWeight: 600,
-              letterSpacing: '0.2em',
               textTransform: 'uppercase',
               color: 'var(--ink-soft)',
               marginBottom: 24,
@@ -67,8 +66,8 @@ export default function HomePage() {
           </p>
 
           <h1
+            className="hero-headline"
             style={{
-              fontSize: 'clamp(56px, 7vw, 96px)',
               fontWeight: 900,
               lineHeight: 0.95,
               letterSpacing: '-0.03em',
@@ -83,12 +82,11 @@ export default function HomePage() {
           </h1>
 
           <p
+            className="hero-body"
             style={{
-              fontSize: 17,
               fontWeight: 300,
               color: 'var(--ink-soft)',
               lineHeight: 1.6,
-              maxWidth: 400,
               marginBottom: 44,
               opacity: 0,
               animation: 'fadeUp 0.8s 0.6s forwards',
@@ -98,6 +96,7 @@ export default function HomePage() {
           </p>
 
           <div
+            className="hero-ctas"
             style={{
               display: 'flex',
               gap: 14,
@@ -144,46 +143,15 @@ export default function HomePage() {
           </div>
         </div>
 
-        {/* Right: whale */}
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            paddingTop: 72,
-            position: 'relative',
-            zIndex: 1,
-          }}
-          className="hidden md:flex"
-        >
+        {/* Right: whale (desktop only) */}
+        <div className="hero-whale">
           <WhaleHero />
         </div>
 
-        {/* Scroll hint */}
-        <div
-          style={{
-            position: 'absolute',
-            bottom: 36,
-            left: 48,
-            display: 'flex',
-            alignItems: 'center',
-            gap: 10,
-            fontSize: 11,
-            fontWeight: 500,
-            letterSpacing: '0.15em',
-            textTransform: 'uppercase',
-            color: 'var(--ink-soft)',
-            opacity: 0,
-            animation: 'fadeUp 1s 1.2s forwards',
-          }}
-        >
-          <div className="scroll-line" />
-          {t('scrollExplore')}
-        </div>
       </section>
 
       {/* ── BEER LINEUP ──────────────────────────────────────── */}
-      <section style={{ padding: '100px 48px' }} id="beers">
+      <section className="site-section" style={{ padding: '100px 48px' }} id="beers">
         <ScrollReveal>
           <div
             style={{
@@ -345,7 +313,6 @@ export default function HomePage() {
               textAlign: 'center',
               padding: '20px 40px',
               position: 'relative',
-              borderRight: i < stats.length - 1 ? '1px solid rgba(255,255,255,0.1)' : 'none',
             }}
           >
             <div
@@ -557,7 +524,7 @@ export default function HomePage() {
             </Link>
           </div>
 
-          <div className="hidden md:flex" style={{ flexShrink: 0 }}>
+          <div className="desktop-only" style={{ flexShrink: 0 }}>
             <BeerLabel beer={seasonal} size="lg" nameOverride={seasonalText.name} />
           </div>
         </div>
@@ -637,6 +604,7 @@ export default function HomePage() {
                 href={venue.googleMapsUrl}
                 target="_blank"
                 rel="noopener noreferrer"
+                className="venue-row"
                 style={{
                   display: 'flex',
                   alignItems: 'center',
@@ -646,6 +614,7 @@ export default function HomePage() {
                   textDecoration: 'none',
                   color: 'var(--ink)',
                   transition: 'padding-left 0.2s',
+                  gap: 12,
                 }}
                 onMouseEnter={e => (e.currentTarget.style.paddingLeft = '8px')}
                 onMouseLeave={e => (e.currentTarget.style.paddingLeft = '0')}
@@ -724,21 +693,6 @@ export default function HomePage() {
         </div>
       </ScrollReveal>
 
-      {/* Mobile responsive styles */}
-      <style>{`
-        @media (max-width: 900px) {
-          .hero-section { grid-template-columns: 1fr !important; padding: 0 24px !important; }
-          .beer-grid { grid-template-columns: 1fr 1fr !important; }
-          .stats-grid { grid-template-columns: 1fr 1fr !important; gap: 0 !important; }
-          .story-section { grid-template-columns: 1fr !important; padding: 60px 24px !important; gap: 40px !important; }
-          .seasonal-card { margin: 0 24px !important; padding: 48px 32px !important; grid-template-columns: 1fr !important; }
-          .locations-section { grid-template-columns: 1fr !important; padding: 60px 24px !important; }
-          .b2b-strip { margin: 0 24px 60px !important; flex-direction: column !important; padding: 40px 32px !important; }
-        }
-        @media (max-width: 600px) {
-          .beer-grid { grid-template-columns: 1fr !important; }
-        }
-      `}</style>
     </>
   )
 }

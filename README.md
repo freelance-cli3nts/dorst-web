@@ -19,6 +19,21 @@ This app uses middleware, API routes (Stripe), and server features. **Vercel** i
 
 Copy `.env.example` to `.env.local` and fill in the values for local development.
 
+### Brand assets
+
+- Logo and beer labels live in `public/brand/` and `public/labels/`.
+- The **brand book** lives at `public/brand-book/index.html` (self-contained HTML, ~8 MB).
+
+**Temporary designer share link (GitHub Pages):**
+
+```
+https://dorstbgbrewery.github.io/dorst-web/brand-book/
+```
+
+No separate hosting needed — it deploys with the site. Send that URL to reviewers; remove `public/brand-book/` (and the partner-portal link in `B2BPortalClient.tsx`) when you no longer need it.
+
+On production (`dorst.bg`), the partner portal links to the same path after access-code verification. On static Pages there is no real auth — the URL is public if someone knows it.
+
 ### GitHub Pages (static preview only)
 
 A workflow builds a **static export** for preview/demo. API routes and middleware do not run on Pages.
@@ -26,12 +41,12 @@ A workflow builds a **static export** for preview/demo. API routes and middlewar
 1. **Settings → Pages → Source:** GitHub Actions
 2. Push to `main`, or run **Actions → Deploy to GitHub Pages**
 
-Preview URL: `https://freelance-cli3nts.github.io/dorst-web/`
+Preview URL: `https://dorstbgbrewery.github.io/dorst-web/`
 
 To test the Pages build locally:
 
 ```bash
-GITHUB_PAGES=true GITHUB_REPOSITORY=freelance-cli3nts/dorst-web pnpm build
+GITHUB_PAGES=true GITHUB_REPOSITORY=dorstbgbrewery/dorst-web pnpm build
 npx serve out -p 3001
 # → http://localhost:3001/dorst-web/
 ```

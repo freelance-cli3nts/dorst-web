@@ -39,7 +39,7 @@ export function BeerDetailClient({ beer, relatedBeers }: Props) {
           <p style={{ fontSize: 11, fontWeight: 600, letterSpacing: '0.2em', textTransform: 'uppercase', color: `${beer.contrastHex}99`, marginBottom: 16 }}>{text.style}</p>
           <h1 style={{ fontSize: 'clamp(48px, 7vw, 80px)', fontWeight: 900, lineHeight: 0.95, letterSpacing: '-0.03em', color: beer.contrastHex, marginBottom: 20 }}>{text.name}</h1>
           <p style={{ fontSize: 18, fontWeight: 300, color: `${beer.contrastHex}CC`, lineHeight: 1.55, maxWidth: 440, marginBottom: 32 }}>{text.tagline}</p>
-          <div style={{ display: 'inline-flex', alignItems: 'baseline', gap: 4, background: 'rgba(0,0,0,0.15)', borderRadius: 4, padding: '12px 20px', backdropFilter: 'blur(4px)' }}>
+          <div className="beer-stats-bar" style={{ display: 'inline-flex', alignItems: 'baseline', gap: 4, background: 'rgba(0,0,0,0.15)', borderRadius: 4, padding: '12px 20px', backdropFilter: 'blur(4px)' }}>
             <span style={{ fontWeight: 900, fontSize: 20, color: beer.contrastHex }}>{beer.abv}</span>
             <span style={{ fontFamily: 'var(--font-mono)', fontSize: 13, color: `${beer.contrastHex}99` }}>%</span>
             <span style={{ margin: '0 8px', color: `${beer.contrastHex}66` }}>·</span>
@@ -55,13 +55,13 @@ export function BeerDetailClient({ beer, relatedBeers }: Props) {
             <span style={{ fontFamily: 'var(--font-mono)', fontSize: 13, color: `${beer.contrastHex}99` }}>{beer.ml.join('/')}ml</span>
           </div>
         </div>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }} className="hidden md:flex">
+        <div className="desktop-only">
           <BeerLabel beer={beer} size="hero" nameOverride={text.name} />
         </div>
       </section>
 
       {beer.labelType === 'pdf' && beer.labelSrc && (
-        <section style={{ padding: '40px 48px', borderBottom: '1px solid var(--line)', background: 'var(--paper)' }}>
+        <section className="page-pad" style={{ padding: '40px 48px', borderBottom: '1px solid var(--line)', background: 'var(--paper)' }}>
           <h2 style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--ink-soft)', marginBottom: 16 }}>
             {t('viewLabelPdf')}
           </h2>
@@ -82,7 +82,7 @@ export function BeerDetailClient({ beer, relatedBeers }: Props) {
       )}
 
       {beer.tags.length > 0 && (
-        <div style={{ padding: '20px 48px', borderBottom: '1px solid var(--line)', display: 'flex', gap: 8 }}>
+        <div className="page-pad" style={{ padding: '20px 48px', borderBottom: '1px solid var(--line)', display: 'flex', gap: 8, flexWrap: 'wrap' }}>
           {beer.tags.map(tag => (
             <span key={tag} style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', padding: '5px 12px', border: '1.5px solid var(--ink)', borderRadius: 'var(--radius-pill)', color: 'var(--ink)' }}>
               {t(`tags.${tag}`)}
@@ -91,7 +91,7 @@ export function BeerDetailClient({ beer, relatedBeers }: Props) {
         </div>
       )}
 
-      <section style={{ padding: '60px 48px', display: 'grid', gridTemplateColumns: '1fr 360px', gap: 60, alignItems: 'start' }} className="content-grid">
+      <section className="content-grid page-pad" style={{ padding: '60px 48px', display: 'grid', gridTemplateColumns: '1fr 360px', gap: 60, alignItems: 'start' }}>
         <div>
           <h2 style={{ fontSize: 28, fontWeight: 700, marginBottom: 20, letterSpacing: '-0.01em' }}>{t('story')}</h2>
           <p style={{ fontSize: 17, fontWeight: 300, lineHeight: 1.75, color: 'var(--ink-soft)', marginBottom: 40 }}>{text.story}</p>
@@ -144,9 +144,9 @@ export function BeerDetailClient({ beer, relatedBeers }: Props) {
       </section>
 
       {relatedBeers.length > 0 && (
-        <section style={{ padding: '40px 48px 80px', borderTop: '1px solid var(--line)' }}>
+        <section className="page-pad" style={{ padding: '40px 48px 80px', borderTop: '1px solid var(--line)' }}>
           <h3 style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--ink-soft)', marginBottom: 24 }}>{t('moreBeers')}</h3>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12 }}>
+          <div className="related-beers-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12 }}>
             {relatedBeers.map(b => {
               const rel = pickBeerText(b, locale)
               return (
@@ -165,11 +165,6 @@ export function BeerDetailClient({ beer, relatedBeers }: Props) {
 
       <style>{`
         .related-beer-link:hover { border-color: var(--ink) !important; }
-        @media (max-width: 900px) {
-          .beer-hero { grid-template-columns: 1fr !important; padding: 60px 24px !important; }
-          .content-grid { grid-template-columns: 1fr !important; padding: 40px 24px !important; }
-          .content-grid > div:last-child { order: -1; }
-        }
       `}</style>
     </div>
   )
