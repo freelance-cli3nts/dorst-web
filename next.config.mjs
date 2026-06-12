@@ -1,11 +1,10 @@
 /** @type {import('next').NextConfig} */
 const isGithubPages = process.env.GITHUB_PAGES === 'true'
 const repoName = process.env.GITHUB_REPOSITORY?.split('/')[1] ?? 'dorst-web'
-const basePath = isGithubPages ? `/${repoName}/nextjs-app` : ''
+const basePath = isGithubPages ? `/${repoName}` : ''
 
 const nextConfig = {
-  // Static export only for GitHub Pages preview — production runs on Vercel (SSR)
-  ...(isGithubPages && { output: 'export' }),
+  output: 'export',
   basePath,
   assetPrefix: basePath || undefined,
   trailingSlash: true,
@@ -13,7 +12,7 @@ const nextConfig = {
     ignoreBuildErrors: true,
   },
   images: {
-    unoptimized: isGithubPages,
+    unoptimized: true,
   },
 }
 

@@ -30,10 +30,9 @@ jobs:
         with:
           node-version: 22
           cache: pnpm
-          cache-dependency-path: versions/nextjs-app/pnpm-lock.yaml
+          cache-dependency-path: pnpm-lock.yaml
 
-      - name: Install & build Next.js app
-        working-directory: versions/nextjs-app
+      - name: Install & build
         run: |
           pnpm install --frozen-lockfile
           pnpm build
@@ -41,16 +40,9 @@ jobs:
           GITHUB_PAGES: 'true'
           GITHUB_REPOSITORY: ${{ github.repository }}
 
-      - name: Assemble site
-        run: |
-          mkdir -p deploy/html-static deploy/nextjs-app
-          cp docs/index.html deploy/index.html
-          cp -r versions/html-static/. deploy/html-static/
-          cp -r versions/nextjs-app/out/. deploy/nextjs-app/
-
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: deploy
+          path: out
 
   deploy:
     needs: build

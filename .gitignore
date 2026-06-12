@@ -3,15 +3,9 @@ node_modules/
 .pnpm-store/
 .next/
 out/
-tsconfig.tsbuildinfo
-
-# GitHub Pages CI output (not committed)
-deploy/
-
-# Archive (source lives in versions/)
-brand-website-generation.zip
 
 # Environment
+.env
 .env*.local
 
 # OS & tooling
