@@ -1,16 +1,27 @@
 'use client'
 
 import Link from 'next/link'
+import { useTranslations } from 'next-intl'
 import { beers, venues, stats } from '@/lib/data'
 import { WhaleHero } from '@/components/whale/WhaleHero'
 import { ScrollReveal } from '@/components/ScrollReveal'
+import { BeerLabel } from '@/components/beer/BeerLabel'
+import { useLocale } from '@/components/LocaleProvider'
+import { pickBeerText, pickVenueText } from '@/lib/locale-content'
 
 // Core beers shown in the homepage grid (4 cans)
 const HOMEPAGE_BEERS = ['lion-heart', 'hippy-shake', 'alexis', 'pulpa-fiction']
 
+const STAT_KEYS = ['capacity', 'styles', 'rotation', 'established'] as const
+
 export default function HomePage() {
+  const t = useTranslations('Home')
+  const tStats = useTranslations('Stats')
+  const tLoc = useTranslations('Locations')
+  const { locale } = useLocale()
   const homeBeers = beers.filter(b => HOMEPAGE_BEERS.includes(b.id))
   const seasonal = beers.find(b => b.seasonal && b.active) ?? beers[1]
+  const seasonalText = pickBeerText(seasonal, locale)
   const activeVenues = venues.filter(v => v.active)
 
   return (
@@ -52,7 +63,7 @@ export default function HomePage() {
               animation: 'fadeUp 0.8s 0.2s forwards',
             }}
           >
-            Craft brewery · Bankya, Bulgaria · Est. 2017
+            {t('eyebrow')}
           </p>
 
           <h1
@@ -66,9 +77,9 @@ export default function HomePage() {
               animation: 'fadeUp 0.8s 0.4s forwards',
             }}
           >
-            Beer worth<br />
-            <em style={{ fontStyle: 'italic', fontWeight: 400, color: 'var(--ink-soft)' }}>thirsting</em><br />
-            for
+            {t('headlineBefore')}<br />
+            <em style={{ fontStyle: 'italic', fontWeight: 400, color: 'var(--ink-soft)' }}>{t('headlineEmphasis')}</em>
+            {t('headlineAfter') && (<><br />{t('headlineAfter')}</>)}
           </h1>
 
           <p
@@ -83,7 +94,7 @@ export default function HomePage() {
               animation: 'fadeUp 0.8s 0.6s forwards',
             }}
           >
-            Dorst /dɔrst/ — thirst in Dutch. We brew the kind of beer we&apos;d genuinely want to drink: bold styles, honest ingredients, no compromise.
+            {t('body')}
           </p>
 
           <div
@@ -111,7 +122,7 @@ export default function HomePage() {
               }}
               onMouseEnter={undefined}
             >
-              Shop Cans
+              {t('cta')}
             </Link>
             <Link
               href="https://partners.dorst.bg"
@@ -128,7 +139,7 @@ export default function HomePage() {
                 transition: 'border-color 0.2s',
               }}
             >
-              I&apos;m a Partner →
+              {t('ctaPartner')}
             </Link>
           </div>
         </div>
@@ -167,7 +178,7 @@ export default function HomePage() {
           }}
         >
           <div className="scroll-line" />
-          Scroll to explore
+          {t('scrollExplore')}
         </div>
       </section>
 
@@ -187,7 +198,7 @@ export default function HomePage() {
               gap: 16,
             }}
           >
-            Our Beers
+            {t('beersHeading')}
             <span style={{ flex: 1, height: 1, background: 'var(--line)' }} />
           </div>
         </ScrollReveal>
@@ -200,7 +211,9 @@ export default function HomePage() {
           }}
           className="beer-grid"
         >
-          {homeBeers.map((beer, i) => (
+          {homeBeers.map((beer, i) => {
+            const beerText = pickBeerText(beer, locale)
+            return (
             <ScrollReveal key={beer.id} delay={i + 1}>
               <Link
                 href={`/beers/${beer.slug}`}
@@ -238,7 +251,6 @@ export default function HomePage() {
                   }}
                 />
 
-                {/* Can placeholder */}
                 <div
                   style={{
                     position: 'absolute',
@@ -251,22 +263,7 @@ export default function HomePage() {
                     justifyContent: 'center',
                   }}
                 >
-                  <div
-                    style={{
-                      width: 72,
-                      height: 128,
-                      borderRadius: 8,
-                      background: 'rgba(255,255,255,0.15)',
-                      border: '1px solid rgba(255,255,255,0.3)',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                    }}
-                  >
-                    <span style={{ fontSize: 9, fontWeight: 700, color: 'white', textAlign: 'center', padding: 4, letterSpacing: '0.05em' }}>
-                      {beer.name.toUpperCase()}
-                    </span>
-                  </div>
+                  <BeerLabel beer={beer} size="md" nameOverride={beerText.name} />
                 </div>
 
                 {/* Content */}
@@ -278,10 +275,10 @@ export default function HomePage() {
                   }}
                 >
                   <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.7)', marginBottom: 6 }}>
-                    {beer.style}
+                    {beerText.style}
                   </div>
                   <div style={{ fontSize: 26, fontWeight: 700, color: 'white', lineHeight: 1.1, marginBottom: 4 }}>
-                    {beer.name}
+                    {beerText.name}
                   </div>
                   <div style={{ fontSize: 13, color: 'rgba(255,255,255,0.6)' }}>
                     {beer.abv}% ABV
@@ -299,12 +296,12 @@ export default function HomePage() {
                       borderRadius: 2,
                     }}
                   >
-                    View beer →
+                    {t('viewBeer')}
                   </span>
                 </div>
               </Link>
             </ScrollReveal>
-          ))}
+          )})}
         </div>
 
         <div style={{ marginTop: 40, textAlign: 'center' }}>
@@ -324,7 +321,7 @@ export default function HomePage() {
             }}
             onMouseEnter={undefined}
           >
-            All 10 beers →
+            {t('allBeers')}
           </Link>
         </div>
       </section>
@@ -343,7 +340,7 @@ export default function HomePage() {
       >
         {stats.map((stat, i) => (
           <div
-            key={stat.label}
+            key={STAT_KEYS[i]}
             style={{
               textAlign: 'center',
               padding: '20px 40px',
@@ -369,7 +366,7 @@ export default function HomePage() {
               )}
             </div>
             <div style={{ fontSize: 13, fontWeight: 400, color: 'rgba(255,255,255,0.45)', letterSpacing: '0.08em', marginTop: 10, textTransform: 'uppercase' }}>
-              {stat.label}
+              {tStats(STAT_KEYS[i])}
             </div>
           </div>
         ))}
@@ -402,7 +399,7 @@ export default function HomePage() {
                 gap: 16,
               }}
             >
-              Our Story
+              {t('storyHeading')}
               <span style={{ flex: 1, height: 1, background: 'var(--line)' }} />
             </div>
 
@@ -416,14 +413,14 @@ export default function HomePage() {
                 marginBottom: 28,
               }}
             >
-              Born from two<br />countries,<br />one thirst
+              {t('storyTitle')}
             </h2>
 
             <p style={{ fontSize: 17, fontWeight: 300, color: 'var(--ink-soft)', lineHeight: 1.75, marginBottom: 28 }}>
-              Dorst — meaning &ldquo;thirst&rdquo; in Dutch — was founded in 2017 as a collaboration between Dean and Erwin: a Bulgarian and a Dutchman who shared an obsession with craft beer done right. We brew in Bankya with one simple mission: to make the beers we&apos;d genuinely want to drink ourselves.
+              {t('storyP1')}
             </p>
             <p style={{ fontSize: 17, fontWeight: 300, color: 'var(--ink-soft)', lineHeight: 1.75, marginBottom: 40 }}>
-              No shortcuts. No filler adjuncts. Just honest ingredients, bold recipes, and a whale to watch over it all.
+              {t('storyP2')}
             </p>
 
             <div
@@ -437,8 +434,8 @@ export default function HomePage() {
             >
               <span style={{ fontSize: 28, lineHeight: 1 }}>🇧🇬 🇳🇱</span>
               <div>
-                <strong style={{ fontSize: 14, fontWeight: 600 }}>Dean &amp; Erwin</strong><br />
-                <span style={{ fontSize: 13, color: 'var(--ink-soft)' }}>Co-founders · Bankya Brewery</span>
+                <strong style={{ fontSize: 14, fontWeight: 600 }}>{t('founders')}</strong><br />
+                <span style={{ fontSize: 13, color: 'var(--ink-soft)' }}>{t('foundersRole')}</span>
               </div>
             </div>
           </div>
@@ -463,7 +460,7 @@ export default function HomePage() {
                 <circle cx="17" cy="21" r="5" stroke="currentColor" strokeWidth="2" />
                 <path d="M 4 36 L 16 26 L 24 33 L 32 24 L 44 36" stroke="currentColor" strokeWidth="2" fill="none" />
               </svg>
-              <span style={{ fontSize: 12, letterSpacing: '0.1em', textTransform: 'uppercase' }}>Brewery photo</span>
+              <span style={{ fontSize: 12, letterSpacing: '0.1em', textTransform: 'uppercase' }}>{t('breweryPhoto')}</span>
             </div>
           </div>
         </ScrollReveal>
@@ -513,7 +510,7 @@ export default function HomePage() {
                 marginBottom: 20,
               }}
             >
-              Summer 2025
+              {t('seasonalLabel')}
             </span>
 
             <h2
@@ -526,7 +523,7 @@ export default function HomePage() {
                 marginBottom: 16,
               }}
             >
-              {seasonal.name} paints<br />in Vienna
+              {seasonalText.name}
             </h2>
 
             <p
@@ -539,7 +536,7 @@ export default function HomePage() {
                 maxWidth: 440,
               }}
             >
-              {seasonal.taglineEn} Limited batch — while stocks last.
+              {seasonalText.tagline} {t('seasonalLimited')}
             </p>
 
             <Link
@@ -556,28 +553,12 @@ export default function HomePage() {
                 transition: 'transform 0.2s',
               }}
             >
-              Discover {seasonal.name} →
+              {t('discoverBeer', { name: seasonalText.name })}
             </Link>
           </div>
 
-          {/* Can placeholder */}
-          <div
-            style={{
-              width: 120,
-              height: 220,
-              borderRadius: 12,
-              background: 'rgba(255,255,255,0.25)',
-              border: '1px solid rgba(255,255,255,0.4)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              flexShrink: 0,
-            }}
-            className="hidden md:flex"
-          >
-            <span style={{ fontSize: 10, fontWeight: 700, color: 'rgba(0,0,0,0.5)', letterSpacing: '0.1em', fontStyle: 'italic' }}>
-              {seasonal.name}
-            </span>
+          <div className="hidden md:flex" style={{ flexShrink: 0 }}>
+            <BeerLabel beer={seasonal} size="lg" nameOverride={seasonalText.name} />
           </div>
         </div>
       </ScrollReveal>
@@ -609,7 +590,7 @@ export default function HomePage() {
                 gap: 16,
               }}
             >
-              Find Dorst
+              {t('venuesHeading')}
               <span style={{ flex: 1, height: 1, background: 'var(--line)' }} />
             </div>
 
@@ -622,11 +603,11 @@ export default function HomePage() {
                 marginBottom: 20,
               }}
             >
-              Available at<br />{activeVenues.length} venues<br />across Sofia
+              {t('venuesTitle', { count: activeVenues.length })}
             </h2>
 
             <p style={{ fontSize: 16, color: 'var(--ink-soft)', lineHeight: 1.65, marginBottom: 36 }}>
-              Find us on tap and on the shelf at some of Sofia&apos;s best bars and bottle shops. Each venue is handpicked — they care about what they pour.
+              {t('venuesBody')}
             </p>
 
             <Link
@@ -643,7 +624,7 @@ export default function HomePage() {
                 transition: 'background 0.2s, color 0.2s',
               }}
             >
-              See all locations →
+              {t('venuesCta')}
             </Link>
           </div>
         </ScrollReveal>
@@ -683,7 +664,7 @@ export default function HomePage() {
                       borderRadius: 100,
                     }}
                   >
-                    {venue.type === 'bottle_shop' ? 'Bottle Shop' : venue.type === 'bar' ? 'Bar' : 'Restaurant'}
+                    {tLoc(`types.${venue.type}`)}
                   </span>
                   <span style={{ opacity: 0.3, fontSize: 16 }}>→</span>
                 </div>
@@ -711,13 +692,13 @@ export default function HomePage() {
         >
           <div>
             <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--ink-soft)', marginBottom: 10 }}>
-              For venues &amp; bottle shops
+              {t('partnersEyebrow')}
             </div>
             <h3 style={{ fontSize: 32, fontWeight: 700, lineHeight: 1.15, letterSpacing: '-0.02em', marginBottom: 12 }}>
-              Stock Dorst<br />in your venue
+              {t('partnersTitle')}
             </h3>
             <p style={{ fontSize: 15, color: 'var(--ink-soft)', fontWeight: 300, maxWidth: 440, lineHeight: 1.6 }}>
-              Access our full range of kegs and cans. Self-serve ordering, real-time inventory, and invoicing built in — no back-and-forth required.
+              {t('partnersBody')}
             </p>
           </div>
 
@@ -738,7 +719,7 @@ export default function HomePage() {
               transition: 'background 0.2s, color 0.2s',
             }}
           >
-            Partner Portal →
+            {t('partnersCta')}
           </Link>
         </div>
       </ScrollReveal>

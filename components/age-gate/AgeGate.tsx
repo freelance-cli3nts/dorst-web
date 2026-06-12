@@ -2,6 +2,7 @@
 
 import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
+import { useTranslations } from 'next-intl'
 import { WhaleSVG } from '@/components/whale/WhaleSVG'
 
 const COOKIE = 'dorst-age-verified'
@@ -13,9 +14,9 @@ function getReturnPath() {
 
 export function AgeGate() {
   const router = useRouter()
+  const t = useTranslations('AgeGate')
 
   useEffect(() => {
-    // Already verified — redirect away (middleware lets /age-gate through)
     const match = document.cookie.match(new RegExp(`(?:^|; )${COOKIE}=([^;]*)`))
     if (match?.[1] === '1') router.replace(getReturnPath())
   }, [router])
@@ -44,86 +45,22 @@ export function AgeGate() {
         textAlign: 'center',
       }}
     >
-      {/* Wordmark */}
-      <div
-        style={{
-          fontSize: 28,
-          fontWeight: 900,
-          color: 'white',
-          letterSpacing: '-0.5px',
-          marginBottom: 40,
-          opacity: 0,
-          animation: 'fadeUp 0.8s 0.1s forwards',
-        }}
-      >
+      <div style={{ fontSize: 28, fontWeight: 900, color: 'white', letterSpacing: '-0.5px', marginBottom: 40, opacity: 0, animation: 'fadeUp 0.8s 0.1s forwards' }}>
         DORST
       </div>
 
-      {/* Whale */}
-      <div
-        style={{
-          animation: 'whaleFloat 6s ease-in-out infinite',
-          marginBottom: 48,
-          opacity: 0,
-          animationDelay: '0.3s',
-          animationFillMode: 'forwards',
-        }}
-      >
+      <div style={{ animation: 'whaleFloat 6s ease-in-out infinite', marginBottom: 48, opacity: 0, animationDelay: '0.3s', animationFillMode: 'forwards' }}>
         <WhaleSVG size="gate" fill="rgba(255,255,255,0.9)" />
       </div>
 
-      {/* Headline */}
-      <p
-        style={{
-          fontSize: 11,
-          fontWeight: 600,
-          letterSpacing: '0.2em',
-          textTransform: 'uppercase',
-          color: 'rgba(255,255,255,0.45)',
-          marginBottom: 16,
-          opacity: 0,
-          animation: 'fadeUp 0.8s 0.5s forwards',
-        }}
-      >
-        Craft Brewery · Bankya, Bulgaria
+      <p style={{ fontSize: 11, fontWeight: 600, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.45)', marginBottom: 16, opacity: 0, animation: 'fadeUp 0.8s 0.5s forwards' }}>
+        {t('eyebrow')}
       </p>
-      <h1
-        style={{
-          fontSize: 'clamp(28px, 5vw, 48px)',
-          fontWeight: 700,
-          color: 'white',
-          lineHeight: 1.2,
-          marginBottom: 8,
-          opacity: 0,
-          animation: 'fadeUp 0.8s 0.6s forwards',
-        }}
-      >
-        How old are you?
+      <h1 style={{ fontSize: 'clamp(28px, 5vw, 48px)', fontWeight: 700, color: 'white', lineHeight: 1.2, marginBottom: 48, opacity: 0, animation: 'fadeUp 0.8s 0.6s forwards' }}>
+        {t('heading')}
       </h1>
-      <p
-        style={{
-          fontSize: 'clamp(18px, 3vw, 24px)',
-          fontWeight: 300,
-          color: 'rgba(255,255,255,0.5)',
-          marginBottom: 48,
-          opacity: 0,
-          animation: 'fadeUp 0.8s 0.7s forwards',
-        }}
-      >
-        На колко години си?
-      </p>
 
-      {/* Buttons */}
-      <div
-        style={{
-          display: 'flex',
-          gap: 16,
-          flexWrap: 'wrap',
-          justifyContent: 'center',
-          opacity: 0,
-          animation: 'fadeUp 0.8s 0.9s forwards',
-        }}
-      >
+      <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap', justifyContent: 'center', opacity: 0, animation: 'fadeUp 0.8s 0.9s forwards' }}>
         <button
           onClick={handleYes}
           style={{
@@ -139,16 +76,8 @@ export function AgeGate() {
             transition: 'background 0.2s, color 0.2s, border-color 0.2s',
             fontFamily: 'var(--font-sans)',
           }}
-          onMouseEnter={e => {
-            e.currentTarget.style.background = 'transparent'
-            e.currentTarget.style.color = 'var(--sun)'
-          }}
-          onMouseLeave={e => {
-            e.currentTarget.style.background = 'var(--sun)'
-            e.currentTarget.style.color = 'var(--ink)'
-          }}
         >
-          YES, I&apos;M 18+ · ДА, НАД 18 СЪМ
+          {t('yes')}
         </button>
 
         <button
@@ -166,16 +95,8 @@ export function AgeGate() {
             transition: 'border-color 0.2s, color 0.2s',
             fontFamily: 'var(--font-sans)',
           }}
-          onMouseEnter={e => {
-            e.currentTarget.style.borderColor = 'rgba(255,255,255,0.7)'
-            e.currentTarget.style.color = 'white'
-          }}
-          onMouseLeave={e => {
-            e.currentTarget.style.borderColor = 'rgba(255,255,255,0.3)'
-            e.currentTarget.style.color = 'rgba(255,255,255,0.7)'
-          }}
         >
-          NOT YET · ОЩЕ НЕ
+          {t('no')}
         </button>
       </div>
     </div>

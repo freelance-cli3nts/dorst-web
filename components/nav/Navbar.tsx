@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { useState, useEffect } from 'react'
 import { useTranslations } from 'next-intl'
-import { WhaleSVG } from '@/components/whale/WhaleSVG'
+import { DorstLogo } from '@/components/brand/DorstLogo'
 import { useCart } from '@/contexts/CartContext'
 import { useLocale } from '@/components/LocaleProvider'
 
@@ -54,17 +54,7 @@ export function Navbar() {
           color: 'var(--ink)',
         }}
       >
-        <WhaleSVG size="nav" />
-        <span
-          style={{
-            fontFamily: 'var(--font-sans)',
-            fontSize: 22,
-            fontWeight: 900,
-            letterSpacing: '-0.5px',
-          }}
-        >
-          DORST
-        </span>
+        <DorstLogo height={32} />
       </Link>
 
       {/* Desktop nav links */}

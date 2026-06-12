@@ -8,6 +8,9 @@ const nextConfig = {
   basePath,
   assetPrefix: basePath || undefined,
   trailingSlash: true,
+  env: {
+    NEXT_PUBLIC_BASE_PATH: basePath,
+  },
   typescript: {
     ignoreBuildErrors: true,
   },

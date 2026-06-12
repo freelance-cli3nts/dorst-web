@@ -1,8 +1,13 @@
 'use client'
 
-import { useState, useReducer } from 'react'
+import { useState, useReducer, useEffect } from 'react'
 import Link from 'next/link'
+import { useTranslations } from 'next-intl'
 import { WhaleSVG } from '@/components/whale/WhaleSVG'
+import { DorstLogo } from '@/components/brand/DorstLogo'
+import { assetPath } from '@/lib/asset-path'
+
+const PARTNER_ACCESS_KEY = 'dorst-partner-access'
 
 // ── Data ─────────────────────────────────────────────────────────
 const PRODUCTS = [
@@ -38,7 +43,10 @@ interface Company {
 }
 
 // ── Main component ───────────────────────────────────────────────
+const STEP_KEYS = ['access', 'verify', 'order', 'payment', 'confirm'] as const
+
 export function B2BPortalClient() {
+  const t = useTranslations('B2B')
   const [screen, setScreen] = useState<Screen>(1)
   const [accessCode, setAccessCode] = useState('')
   const [accessError, setAccessError] = useState(false)
@@ -57,6 +65,13 @@ export function B2BPortalClient() {
   const [submitting, setSubmitting] = useState(false)
   const [confirmOrder, setConfirmOrder] = useState('')
   const [confirmInvoice, setConfirmInvoice] = useState('')
+  const [partnerVerified, setPartnerVerified] = useState(false)
+
+  useEffect(() => {
+    if (sessionStorage.getItem(PARTNER_ACCESS_KEY) === '1') {
+      setPartnerVerified(true)
+    }
+  }, [])
 
   const subtotal = PRODUCTS.reduce((s, p) => s + (qty[p.id] ?? 0) * p.price, 0)
   const vat = subtotal * 0.20
@@ -66,6 +81,8 @@ export function B2BPortalClient() {
     const val = accessCode.trim().toUpperCase()
     if (val.startsWith('DORST-') && val.length >= 8) {
       setAccessError(false)
+      setPartnerVerified(true)
+      sessionStorage.setItem(PARTNER_ACCESS_KEY, '1')
       setScreen(2)
     } else {
       setAccessError(true)
@@ -171,13 +188,25 @@ export function B2BPortalClient() {
       {/* Top bar */}
       <header style={{ height: 64, display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 48px', borderBottom: '1px solid var(--line)', background: '#FAFAF5', position: 'sticky', top: 0, zIndex: 100 }}>
         <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: 10, textDecoration: 'none', color: 'var(--ink)' }}>
-          <WhaleSVG size="nav" />
-          <span style={{ fontSize: 20, fontWeight: 900, letterSpacing: '-0.5px' }}>DORST</span>
+          <DorstLogo height={28} />
           <span style={{ fontSize: 10, fontWeight: 600, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#706E66', background: '#E8E5DC', padding: '3px 8px', borderRadius: 100 }}>
-            Partner Portal
+            {t('badge')}
           </span>
         </Link>
-        <Link href="/" style={{ fontSize: 13, color: '#706E66', textDecoration: 'none' }}>← Main site</Link>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 20 }}>
+          {partnerVerified && screen > 1 && (
+            <a
+              href={assetPath('/brand-book/index.html')}
+              target="_blank"
+              rel="noopener noreferrer"
+              title={t('brandBookHint')}
+              style={{ fontSize: 13, fontWeight: 600, color: 'var(--ink)', textDecoration: 'none', borderBottom: '1px solid var(--ink)' }}
+            >
+              {t('brandBook')} ↗
+            </a>
+          )}
+          <Link href="/" style={{ fontSize: 13, color: '#706E66', textDecoration: 'none' }}>{t('backToSite')}</Link>
+        </div>
       </header>
 
       {/* Step indicator */}
@@ -200,7 +229,7 @@ export function B2BPortalClient() {
               {screen > step ? <span style={{ fontSize: 14 }}>✓</span> : step}
             </div>
             <span style={{ fontSize: 11, fontWeight: screen === step ? 600 : 500, color: screen === step ? 'var(--ink)' : '#706E66', letterSpacing: '0.04em', whiteSpace: 'nowrap' }}>
-              {['Access', 'Verify', 'Order', 'Payment', 'Confirm'][i]}
+              {t(`steps.${STEP_KEYS[i]}`)}
             </span>
           </div>
         ))}
@@ -212,24 +241,24 @@ export function B2BPortalClient() {
         {/* Screen 1: Access code */}
         {screen === 1 && (
           <div>
-            <h1 style={{ fontSize: 36, fontWeight: 700, letterSpacing: '-0.02em', marginBottom: 10 }}>Partner access</h1>
-            <p style={{ fontSize: 15, color: '#706E66', fontWeight: 300, marginBottom: 40 }}>Enter the access code provided by Dorst when your account was set up.</p>
+            <h1 style={{ fontSize: 36, fontWeight: 700, letterSpacing: '-0.02em', marginBottom: 10 }}>{t('accessHeading')}</h1>
+            <p style={{ fontSize: 15, color: '#706E66', fontWeight: 300, marginBottom: 40 }}>{t('accessLabel')}</p>
             <div style={{ background: 'white', border: '1.5px solid var(--line)', borderRadius: 10, padding: 44 }}>
               <WhaleSVG size="nav" style={{ marginBottom: 28 } as React.CSSProperties} />
               <div style={{ marginBottom: 20 }}>
-                <label style={{ fontSize: 13, fontWeight: 600, display: 'block', marginBottom: 6 }}>Access Code</label>
+                <label style={{ fontSize: 13, fontWeight: 600, display: 'block', marginBottom: 6 }}>{t('accessHeading')}</label>
                 <input
                   type="text"
                   value={accessCode}
                   onChange={e => { setAccessCode(e.target.value.toUpperCase()); setAccessError(false) }}
                   onKeyDown={e => e.key === 'Enter' && verifyAccess()}
-                  placeholder="DORST-XXXX"
+                  placeholder={t('accessPlaceholder')}
                   style={{ ...inputStyle, textTransform: 'uppercase', letterSpacing: '0.1em', fontSize: 18, borderColor: accessError ? '#B91C1C' : 'var(--line)' }}
                 />
-                {accessError && <p style={{ fontSize: 12, color: '#B91C1C', marginTop: 4 }}>Incorrect access code. Contact Dorst to get yours.</p>}
+                {accessError && <p style={{ fontSize: 12, color: '#B91C1C', marginTop: 4 }}>{t('accessError')}</p>}
                 <p style={{ fontSize: 12, color: '#706E66', marginTop: 4 }}>Received by email when your account was created. Try: DORST-2026</p>
               </div>
-              <button onClick={verifyAccess} style={btnPrimary}>Continue →</button>
+              <button onClick={verifyAccess} style={btnPrimary}>{t('accessSubmit')} →</button>
               <div style={{ background: '#FFF9E6', border: '1px solid #E8D48A', borderRadius: 5, padding: '14px 18px', fontSize: 13, color: '#7A6010', marginTop: 24 }}>
                 This portal is for verified Dorst trade partners only. Not a partner yet?{' '}
                 <a href="mailto:sales@dorst.bg" style={{ color: 'inherit', fontWeight: 600 }}>Contact us</a> to get set up.

@@ -27,6 +27,8 @@ export interface Beer {
   seasonal: boolean
   active: boolean
   hasLabel: boolean
+  labelSrc?: string
+  labelType?: 'image' | 'pdf'
   tags: ('unfiltered' | 'unpasteurised' | 'vegan')[]
   priceB2C?: number
 }
@@ -61,6 +63,8 @@ export const beers: Beer[] = [
     seasonal: false,
     active: true,
     hasLabel: true,
+    labelSrc: '/labels/lion-heart.png',
+    labelType: 'image',
     tags: ['unfiltered', 'unpasteurised', 'vegan'],
     priceB2C: 3.20,
   },
@@ -93,6 +97,8 @@ export const beers: Beer[] = [
     seasonal: true,
     active: true,
     hasLabel: true,
+    labelSrc: '/labels/alma.png',
+    labelType: 'image',
     tags: ['unfiltered', 'unpasteurised', 'vegan'],
     priceB2C: 3.20,
   },
@@ -125,6 +131,8 @@ export const beers: Beer[] = [
     seasonal: false,
     active: true,
     hasLabel: true,
+    labelSrc: '/labels/hippy-shake.png',
+    labelType: 'image',
     tags: ['unfiltered', 'unpasteurised', 'vegan'],
     priceB2C: 3.40,
   },
@@ -157,6 +165,8 @@ export const beers: Beer[] = [
     seasonal: false,
     active: true,
     hasLabel: true,
+    labelSrc: '/labels/alexis.png',
+    labelType: 'image',
     tags: ['unfiltered', 'unpasteurised', 'vegan'],
     priceB2C: 2.90,
   },
@@ -189,6 +199,8 @@ export const beers: Beer[] = [
     seasonal: false,
     active: true,
     hasLabel: true,
+    labelSrc: '/labels/pulpa-fiction.pdf',
+    labelType: 'pdf',
     tags: ['unfiltered', 'unpasteurised', 'vegan'],
     priceB2C: 3.60,
   },
@@ -221,6 +233,8 @@ export const beers: Beer[] = [
     seasonal: false,
     active: true,
     hasLabel: true,
+    labelSrc: '/labels/full-breakfast-stout.pdf',
+    labelType: 'pdf',
     tags: ['unfiltered', 'unpasteurised'],
     priceB2C: 3.60,
   },
@@ -284,7 +298,9 @@ export const beers: Beer[] = [
     kegSizes: [],
     seasonal: false,
     active: true,
-    hasLabel: false,
+    hasLabel: true,
+    labelSrc: '/labels/evrozona.png',
+    labelType: 'image',
     tags: ['unfiltered', 'unpasteurised', 'vegan'],
     priceB2C: 3.20,
   },

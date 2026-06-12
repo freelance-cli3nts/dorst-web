@@ -30,6 +30,10 @@ export function LocaleProvider({ children }: { children: React.ReactNode }) {
     if (match?.[1] === 'en') setLocaleState('en')
   }, [])
 
+  useEffect(() => {
+    document.documentElement.lang = locale
+  }, [locale])
+
   const setLocale = useCallback((l: Locale) => {
     setLocaleState(l)
     document.cookie = `${COOKIE_NAME}=${l};path=/;max-age=${COOKIE_MAX_AGE};samesite=lax`

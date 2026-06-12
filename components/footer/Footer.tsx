@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { useTranslations } from 'next-intl'
-import { WhaleSVG } from '@/components/whale/WhaleSVG'
+import { DorstLogo } from '@/components/brand/DorstLogo'
 
 const BEER_SLUGS = [
   { slug: 'lion-heart', name: 'Lion Heart' },
@@ -31,9 +31,8 @@ export function Footer() {
       >
         {/* Brand */}
         <div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 20 }}>
-            <WhaleSVG size="nav" fill="white" />
-            <span style={{ fontSize: 20, fontWeight: 900, color: 'white' }}>DORST</span>
+          <div style={{ marginBottom: 20 }}>
+            <DorstLogo height={32} variant="inverted" />
           </div>
           <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.4)', lineHeight: 1.6, fontWeight: 300, maxWidth: 240 }}>
             {t('tagline')}<br />

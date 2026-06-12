@@ -4,6 +4,9 @@ import { useTranslations } from 'next-intl'
 import Link from 'next/link'
 import { useCart } from '@/contexts/CartContext'
 import type { Beer } from '@/lib/data'
+import { useLocale } from '@/components/LocaleProvider'
+import { pickBeerText } from '@/lib/locale-content'
+import { BeerLabel } from '@/components/beer/BeerLabel'
 
 const MINIMUM_CANS = 12
 const VAT_RATE = 0.20
@@ -14,6 +17,7 @@ interface Props {
 
 export function ShopClient({ beers }: Props) {
   const t = useTranslations('Shop')
+  const { locale } = useLocale()
   const { cart, addToCart, removeFromCart, clearCart, totalItems } = useCart()
 
   const subtotal = beers.reduce((sum, b) => sum + (cart[b.id] ?? 0) * (b.priceB2C ?? 0), 0)
@@ -37,7 +41,9 @@ export function ShopClient({ beers }: Props) {
     <div style={{ padding: '40px 48px 80px', display: 'grid', gridTemplateColumns: '1fr 320px', gap: 40, alignItems: 'start' }} className="shop-layout">
       {/* Product list */}
       <div>
-        {beers.map(beer => (
+        {beers.map(beer => {
+          const beerText = pickBeerText(beer, locale)
+          return (
           <div
             key={beer.id}
             style={{
@@ -49,30 +55,14 @@ export function ShopClient({ beers }: Props) {
               borderBottom: '1px solid var(--line)',
             }}
           >
-            {/* Color swatch */}
-            <div
-              style={{
-                width: 80, height: 80,
-                borderRadius: 2,
-                background: beer.accentHex,
-                border: '4px solid var(--ink)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                flexShrink: 0,
-              }}
-            >
-              <span style={{ fontSize: 7, fontWeight: 700, color: 'rgba(255,255,255,0.8)', textAlign: 'center', letterSpacing: '0.06em', textTransform: 'uppercase', padding: 4 }}>
-                {beer.name}
-              </span>
-            </div>
+            <BeerLabel beer={beer} size="sm" variant="card" nameOverride={beerText.name} />
 
             {/* Info */}
             <div>
               <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--ink-soft)', marginBottom: 4 }}>
-                {beer.style}
+                {beerText.style}
               </div>
-              <h3 style={{ fontSize: 18, fontWeight: 700, marginBottom: 4 }}>{beer.name}</h3>
+              <h3 style={{ fontSize: 18, fontWeight: 700, marginBottom: 4 }}>{beerText.name}</h3>
               <div style={{ fontSize: 12, fontFamily: 'var(--font-mono)', color: 'var(--ink-soft)' }}>
                 {beer.abv}% · {beer.plato}° · {beer.ml.map(m => `${m}ml`).join(' / ')}
               </div>
@@ -129,7 +119,7 @@ export function ShopClient({ beers }: Props) {
               </button>
             </div>
           </div>
-        ))}
+        )})}
       </div>
 
       {/* Order summary */}
